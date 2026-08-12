@@ -1,0 +1,499 @@
+/* Sanaulla Sale Modern Design System */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
+:root {
+  --color-primary: #000000;
+  --color-secondary: #E53935;
+  --color-tertiary: #6F8A43;
+  --color-neutral: #E5E7EB;
+  --color-surface: #FFFFFF;
+  --color-on-surface: #000000;
+  --color-error: #E53935;
+  --color-primary-60: #666666;
+  --color-primary-70: #4D4D4D;
+  --color-surface-muted: #F7F7F7;
+
+  --font-family-base: 'Montserrat', sans-serif;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+}
+
+/* Global Font & Reset Overrides */
+body, button, input, select, textarea, p, h1, h2, h3, h4, h5, h6, label {
+  font-family: 'Montserrat', sans-serif !important;
+}
+
+/* Preserve Icon Fonts */
+[class^="ti-"], [class*=" ti-"], [class^="ti-"]::before, [class*=" ti-"]::before {
+  font-family: 'themify' !important;
+}
+.fa, [class^="fa-"], [class*=" fa-"], .fa::before, [class^="fa-"]::before, [class*=" fa-"]::before {
+  font-family: 'FontAwesome' !important;
+}
+
+body {
+  background-color: var(--color-surface) !important;
+  color: var(--color-on-surface) !important;
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 14px;
+  line-height: 22px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Headings Typography */
+h1, .h1 {
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 30px !important;
+  font-weight: 600 !important;
+  line-height: 34px !important;
+  letter-spacing: 0px !important;
+  color: var(--color-on-surface);
+}
+
+h2, .h2, .section-title h2 {
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 24px !important;
+  font-weight: 600 !important;
+  line-height: 28px !important;
+  letter-spacing: 0px !important;
+  color: var(--color-on-surface);
+}
+
+h3, .h3 {
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  line-height: 24px !important;
+  letter-spacing: 0px !important;
+  color: var(--color-on-surface);
+}
+
+h4, .h4 {
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  line-height: 22px !important;
+  letter-spacing: 0px !important;
+  color: var(--color-on-surface);
+}
+
+p, li {
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Button Component Styles */
+.btn-primary, .btn, button[type="submit"], a.btn, .btn.animate {
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  background-color: var(--color-primary) !important;
+  color: var(--color-surface) !important;
+  border-radius: var(--radius-sm) !important;
+  padding: 8px 16px !important;
+  border: 1px solid var(--color-primary) !important;
+  box-shadow: none !important;
+  transition: background-color 0.2s ease, color 0.2s ease !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: none !important;
+}
+
+.btn-primary:hover, .btn:hover, button[type="submit"]:hover, a.btn:hover, .btn.animate:hover {
+  background-color: var(--color-primary-70) !important;
+  border-color: var(--color-primary-70) !important;
+  color: var(--color-surface) !important;
+}
+
+.btn-secondary, .btn-outline {
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  background-color: var(--color-surface) !important;
+  color: var(--color-primary) !important;
+  border: 1px solid var(--color-neutral) !important;
+  border-radius: var(--radius-sm) !important;
+  padding: 8px 16px !important;
+  transition: background-color 0.2s ease !important;
+}
+
+.btn-secondary:hover, .btn-outline:hover {
+  background-color: var(--color-surface-muted) !important;
+  color: var(--color-primary) !important;
+}
+
+/* Sanaulla Retail Badge Fix - Small Top-Left Square Badge (Matching Image 2) */
+.single-product .price-dec, 
+.single-product .new, 
+.single-product .hot, 
+.single-product .out-of-stock,
+.single-product .product-img .price-dec,
+.single-product .product-img .new,
+.single-product .product-img .hot,
+.single-product .product-img .out-of-stock,
+.product-img span.price-dec, 
+.product-img span.new, 
+.product-img span.hot, 
+.product-img span.out-of-stock {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: auto !important;
+  bottom: auto !important;
+  width: auto !important;
+  min-width: 44px !important;
+  max-width: fit-content !important;
+  background-color: #c62828 !important;
+  color: #ffffff !important;
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  padding: 5px 8px !important;
+  border-radius: 0 !important;
+  letter-spacing: 0.5px !important;
+  z-index: 10 !important;
+  display: inline-block !important;
+  box-shadow: none !important;
+  line-height: 1.2 !important;
+  text-align: center !important;
+}
+
+/* Card Outer Container - Clean Edge-to-Edge Image (Matching Image 2) */
+.single-product {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  margin-bottom: 25px !important;
+  padding: 0 !important;
+}
+
+.single-product:hover {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.single-product .product-img {
+  position: relative !important;
+  width: 100% !important;
+  height: 420px !important;
+  overflow: hidden !important;
+  background-color: #f3f3f3 !important;
+  border-radius: 0 !important;
+}
+
+.single-product .product-img a {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.single-product .product-img img.default-img,
+.single-product .product-img img.hover-img,
+.single-product .product-img img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: top center !important;
+  border-radius: 0 !important;
+  transition: opacity 0.3s ease !important;
+}
+
+/* Completely Hide Product Hover Overlay Buttons */
+.single-product .button-head,
+.single-product .product-action,
+.single-product .product-action-2,
+.product-img .button-head,
+.product-img .product-action,
+.product-img .product-action-2 {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.single-product .product-content {
+  padding: 10px 0 0 0 !important;
+  text-align: left !important;
+}
+
+.single-product .product-content h3 {
+  margin-bottom: 4px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.3px !important;
+  min-height: auto !important;
+}
+
+.single-product .product-content h3 a {
+  color: #111111 !important;
+  font-family: 'Montserrat', sans-serif !important;
+  text-transform: uppercase !important;
+  line-height: 1.3 !important;
+}
+
+.single-product .product-price {
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 13px !important;
+  margin-top: 2px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.single-product .product-price span {
+  color: #111111 !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+}
+
+.single-product .product-price span.old,
+.single-product .product-price del {
+  color: #888888 !important;
+  font-weight: 400 !important;
+  font-size: 12px !important;
+  text-decoration: line-through !important;
+  margin-left: 4px !important;
+}
+
+/* Product Area Full Width & Column Gaps */
+.product-area .container-fluid {
+  max-width: 100% !important;
+  width: 100% !important;
+  padding-left: 24px !important;
+  padding-right: 24px !important;
+}
+
+.product-area .isotope-grid {
+  margin-left: -8px !important;
+  margin-right: -8px !important;
+}
+
+.product-area .isotope-item {
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+}
+
+/* Medium Banner Full Bleed & Uniform Height Styling */
+.midium-banner {
+  padding: 10px 0 !important;
+}
+
+.midium-banner .container-fluid {
+  max-width: 100% !important;
+  width: 100% !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.midium-banner .single-banner {
+  position: relative !important;
+  height: 460px !important;
+  overflow: hidden !important;
+  border-radius: 0 !important;
+  border: none !important;
+  background-color: #f3f3f3 !important;
+  box-shadow: none !important;
+}
+
+.midium-banner .single-banner img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  border-radius: 0 !important;
+  transition: transform 0.4s ease !important;
+}
+
+.midium-banner .single-banner:hover img {
+  transform: scale(1.03);
+}
+
+.midium-banner .single-banner .content {
+  position: absolute !important;
+  top: 50% !important;
+  left: 40px !important;
+  transform: translateY(-50%) !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  padding: 24px 30px !important;
+  border-radius: 6px !important;
+  max-width: 420px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08) !important;
+  z-index: 5 !important;
+}
+
+.midium-banner .single-banner .content h3 {
+  color: #000000 !important;
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  line-height: 1.3 !important;
+  margin-bottom: 12px !important;
+}
+
+.midium-banner .single-banner .content p {
+  color: #6F8A43 !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  margin-bottom: 6px !important;
+}
+  padding: 3px 8px !important;
+  display: inline-block;
+}
+
+.brand-tertiary-accent, .tertiary-badge {
+  color: var(--color-tertiary) !important;
+}
+
+/* Inputs & Form Scanning */
+input.form-control, select.form-control, textarea.form-control, input[type="text"], input[type="search"] {
+  background-color: var(--color-surface) !important;
+  color: var(--color-on-surface) !important;
+  border: 1px solid var(--color-neutral) !important;
+  border-radius: var(--radius-sm) !important;
+  padding: 8px 12px !important;
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 14px !important;
+  box-shadow: none !important;
+}
+
+input.form-control:focus, select.form-control:focus, textarea.form-control:focus {
+  border-color: var(--color-primary) !important;
+  outline: none !important;
+}
+
+/* Chips & Filter Badges */
+.chip, .tag-chip {
+  background-color: var(--color-surface-muted) !important;
+  color: var(--color-primary) !important;
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  border-radius: var(--radius-full) !important;
+  padding: 4px 12px !important;
+  display: inline-block;
+}
+
+/* Footer Modern Retail Styles */
+.footer {
+  background-color: var(--color-primary) !important;
+  color: var(--color-surface) !important;
+}
+
+.footer .footer-top {
+  background-color: var(--color-primary) !important;
+  border-top: 1px solid #222222;
+  padding: 50px 0 30px !important;
+}
+
+.footer h4 {
+  color: var(--color-surface) !important;
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  margin-bottom: 15px !important;
+}
+
+.footer p, .footer li, .footer a {
+  color: #cccccc !important;
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 14px !important;
+}
+
+.footer a:hover {
+  color: var(--color-surface) !important;
+}
+
+.footer .copyright {
+  background-color: #111111 !important;
+  border-top: 1px solid #222222 !important;
+  padding: 20px 0 !important;
+  color: #888888 !important;
+}
+
+/* Featured Category Circular Carousel */
+.featured-categories-section {
+  background-color: #ffffff;
+  padding-top: 20px !important;
+  padding-bottom: 0px !important;
+  margin: 0 !important;
+}
+
+.product-area.section {
+  padding-top: 20px !important;
+  padding-bottom: 50px !important;
+}
+
+.product-area .section-title {
+  margin-bottom: 20px !important;
+}
+
+.category-circle-carousel {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+  justify-content: center !important;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 991px) {
+  .category-circle-carousel {
+    justify-content: flex-start !important;
+  }
+}
+
+.featured-cats-title {
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 24px !important;
+  font-weight: 600 !important;
+  color: #000000 !important;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.category-circle-img-wrap {
+  transition: transform 0.25s ease, border-color 0.25s ease !important;
+}
+
+.category-circle-img-wrap:hover {
+  transform: scale(1.06);
+  border-color: #6F8A43 !important;
+}
+
+.circle-nav-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50% !important;
+  background-color: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+  color: #333333 !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  transition: background-color 0.2s ease, border-color 0.2s ease !important;
+  outline: none !important;
+  padding: 0 !important;
+}
+
+.circle-nav-btn:hover {
+  background-color: #f7f7f7 !important;
+  border-color: #000000 !important;
+  color: #000000 !important;
+}
