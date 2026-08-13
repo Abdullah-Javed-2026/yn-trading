@@ -103,11 +103,11 @@
                 <div class="container py-3">
                     <form method="POST" action="{{route('product.search')}}" class="d-flex align-items-center justify-content-center">
                         @csrf
-                        <div class="input-group" style="max-width: 600px;">
-                            <input name="search" placeholder="Search Products Here....." type="search" class="form-control">
-                            <div class="input-group-append">
-                                <button class="btn btn-dark" type="submit"><i class="ti-search"></i> Search</button>
-                            </div>
+                        <div class="search-bar-pill d-flex align-items-stretch" style="max-width: 650px; width: 100%; border: 1px solid #111111; border-radius: 30px; overflow: hidden; background: #ffffff; height: 46px;">
+                            <input name="search" placeholder="Search Products Here....." type="search" class="form-control" style="border: none !important; box-shadow: none !important; border-radius: 30px 0 0 30px !important; padding: 0 20px !important; height: 100% !important; background: transparent; font-size: 14px; color: #111111;">
+                            <button class="btn btn-dark" type="submit" style="border: none !important; border-radius: 0 30px 30px 0 !important; padding: 0 28px !important; height: 100% !important; background: #000000 !important; color: #ffffff !important; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 6px; white-space: nowrap;">
+                                <i class="ti-search"></i> Search
+                            </button>
                         </div>
                     </form>
                 </div>

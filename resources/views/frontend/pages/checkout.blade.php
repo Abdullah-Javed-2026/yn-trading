@@ -362,14 +362,14 @@
                                     <h2>CART TOTAL</h2>
                                     <div class="content">
                                         <ul>
-										    <li class="order_subtotal" data-price="{{Helper::totalCartPrice()}}">Cart Subtotal<span>${{number_format(Helper::totalCartPrice(),2)}}</span></li>
+										    <li class="order_subtotal" data-price="{{Helper::totalCartPrice()}}">Cart Subtotal<span>PKR.{{number_format(Helper::totalCartPrice(),0)}}</span></li>
                                             <li class="shipping">
                                                 Shipping Cost
                                                 @if(count(Helper::shipping())>0 && Helper::cartCount()>0)
                                                     <select name="shipping" class="nice-select" required>
                                                         <option value="">Select your address</option>
                                                         @foreach(Helper::shipping() as $shipping)
-                                                        <option value="{{$shipping->id}}" class="shippingOption" data-price="{{$shipping->price}}">{{$shipping->type}}: ${{$shipping->price}}</option>
+                                                        <option value="{{$shipping->id}}" class="shippingOption" data-price="{{$shipping->price}}">{{$shipping->type}}: PKR.{{number_format($shipping->price,0)}}</option>
                                                         @endforeach
                                                     </select>
                                                 @else 
@@ -378,7 +378,7 @@
                                             </li>
                                             
                                             @if(session('coupon'))
-                                            <li class="coupon_price" data-price="{{session('coupon')['value']}}">You Save<span>${{number_format(session('coupon')['value'],2)}}</span></li>
+                                            <li class="coupon_price" data-price="{{session('coupon')['value']}}">You Save<span>PKR.{{number_format(session('coupon')['value'],0)}}</span></li>
                                             @endif
                                             @php
                                                 $total_amount=Helper::totalCartPrice();
@@ -387,9 +387,9 @@
                                                 }
                                             @endphp
                                             @if(session('coupon'))
-                                                <li class="last"  id="order_total_price">Total<span>${{number_format($total_amount,2)}}</span></li>
+                                                <li class="last"  id="order_total_price">Total<span>PKR.{{number_format($total_amount,0)}}</span></li>
                                             @else
-                                                <li class="last"  id="order_total_price">Total<span>${{number_format($total_amount,2)}}</span></li>
+                                                <li class="last"  id="order_total_price">Total<span>PKR.{{number_format($total_amount,0)}}</span></li>
                                             @endif
                                         </ul>
                                     </div>
@@ -495,28 +495,6 @@
     </section>
     <!-- End Shop Services -->
     
-    <!-- Start Shop Newsletter  -->
-    <section class="shop-newsletter section">
-        <div class="container">
-            <div class="inner-top">
-                <div class="row">
-                    <div class="col-lg-8 offset-lg-2 col-12">
-                        <!-- Start Newsletter Inner -->
-                        <div class="inner">
-                            <h4>Newsletter</h4>
-                            <p> Subscribe to our newsletter and get <span>10%</span> off your first purchase</p>
-                            <form action="mail/mail.php" method="get" target="_blank" class="newsletter-inner">
-                                <input name="EMAIL" placeholder="Your email address" required="" type="email">
-                                <button class="btn">Subscribe</button>
-                            </form>
-                        </div>
-                        <!-- End Newsletter Inner -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- End Shop Newsletter -->
 @endsection
 @push('styles')
 	<style>

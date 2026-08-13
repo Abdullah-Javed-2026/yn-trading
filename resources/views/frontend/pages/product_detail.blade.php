@@ -17,25 +17,10 @@
 @section('title','Ecommerce Laravel || PRODUCT DETAIL')
 @section('main-content')
 
-		<!-- Breadcrumbs -->
-		<div class="breadcrumbs">
-			<div class="container">
-				<div class="row">
-					<div class="col-12">
-						<div class="bread-inner">
-							<ul class="bread-list">
-								<li><a href="{{route('home')}}">Home<i class="ti-arrow-right"></i></a></li>
-								<li class="active"><a href="">Shop Details</a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- End Breadcrumbs -->
+
 				
 		<!-- Shop Single -->
-		<section class="shop single section">
+		<section class="shop single section" style="padding-top: 15px;">
 					<div class="container">
 						<div class="row"> 
 							<div class="col-12">
@@ -119,48 +104,47 @@
 											<div class="product-buy">
 												<form action="{{route('single-add-to-cart')}}" method="POST">
 													@csrf 
-													<div class="quantity">
-														<h6>Quantity :</h6>
-														<!-- Input Order -->
-														<div class="input-group">
-															<div class="button minus">
-																<button type="button" class="btn btn-primary btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
-																	<i class="ti-minus"></i>
-																</button>
-															</div>
-															<input type="hidden" name="slug" value="{{$product_detail->slug}}">
-															<input type="text" name="quant[1]" class="input-number"  data-min="1" data-max="1000" value="1" id="quantity">
-															<div class="button plus">
-																<button type="button" class="btn btn-primary btn-number" data-type="plus" data-field="quant[1]">
-																	<i class="ti-plus"></i>
-																</button>
+													<div class="d-flex align-items-center flex-wrap my-4" style="gap: 15px;">
+														<div class="d-flex align-items-center" style="margin-right: 10px;">
+															<h6 style="margin: 0 12px 0 0; font-weight: 600; font-size: 14px; color: #111; white-space: nowrap;">Quantity :</h6>
+															<!-- Input Order -->
+															<div class="input-group" style="width: 125px;">
+																<div class="input-group-prepend">
+																	<button type="button" class="btn btn-dark btn-number" disabled="disabled" data-type="minus" data-field="quant[1]" style="border-radius: 4px 0 0 4px; height: 44px; width: 38px; padding: 0; background: #222; border-color: #222;">
+																		<i class="ti-minus"></i>
+																	</button>
+																</div>
+																<input type="hidden" name="slug" value="{{$product_detail->slug}}">
+																<input type="text" name="quant[1]" class="form-control text-center input-number" data-min="1" data-max="1000" value="1" id="quantity" style="height: 44px; border-color: #222; font-weight: 600; color: #111;">
+																<div class="input-group-append">
+																	<button type="button" class="btn btn-dark btn-number" data-type="plus" data-field="quant[1]" style="border-radius: 0 4px 4px 0; height: 44px; width: 38px; padding: 0; background: #222; border-color: #222;">
+																		<i class="ti-plus"></i>
+																	</button>
+																</div>
 															</div>
 														</div>
-													<!--/ End Input Order -->
-													</div>
-													<div class="add-to-cart mt-4">
-														<button type="submit" class="btn">Add to cart</button>
-														<a href="{{route('add-to-wishlist',$product_detail->slug)}}" class="btn min"><i class="ti-heart"></i></a>
+														<div class="d-flex align-items-center" style="gap: 10px;">
+															<button type="submit" class="btn btn-dark" style="height: 44px; border-radius: 4px; font-weight: 600; background: #000; border-color: #000; color: #fff; padding: 0 24px; display: inline-flex; align-items: center; justify-content: center;">Add to cart</button>
+															<a href="{{route('add-to-wishlist',$product_detail->slug)}}" class="btn btn-outline-dark d-inline-flex align-items-center justify-content-center" style="height: 44px; width: 44px; border-radius: 4px; border: 1px solid #000; color: #000; background: #fff; padding: 0;"><i class="ti-heart" style="font-size: 18px;"></i></a>
+														</div>
 													</div>
 												</form>
 
-												<p class="cat">Category :<a href="{{route('product-cat',$product_detail->cat_info['slug'])}}">{{$product_detail->cat_info['title']}}</a></p>
+												<p class="cat mt-3">Category : <a href="{{route('product-cat',$product_detail->cat_info['slug'])}}" style="color: #111; font-weight: 500;">{{$product_detail->cat_info['title']}}</a></p>
 												@if($product_detail->sub_cat_info)
-												<p class="cat mt-1">Sub Category :<a href="{{route('product-sub-cat',[$product_detail->cat_info['slug'],$product_detail->sub_cat_info['slug']])}}">{{$product_detail->sub_cat_info['title']}}</a></p>
+												<p class="cat mt-1">Sub Category : <a href="{{route('product-sub-cat',[$product_detail->cat_info['slug'],$product_detail->sub_cat_info['slug']])}}" style="color: #111; font-weight: 500;">{{$product_detail->sub_cat_info['title']}}</a></p>
 												@endif
-												<!-- <p class="availability">Stock : @if($product_detail->stock>0)<span class="badge badge-success">{{$product_detail->stock}}</span>@else <span class="badge badge-danger">{{$product_detail->stock}}</span>  @endif</p> -->
-												<p class="availability"> Stock: 
-    @if($product_detail->stock > 0)
-        @if($product_detail->stock < 5)
-            <span class="badge badge-warning">Low in stock</span>
-        @else
-            <span class="badge badge-success">Available</span>
-        @endif
-    @else
-        <span class="badge badge-danger">Out of stock</span>
-    @endif
-</p>
-
+												<p class="availability mt-1"> Stock: 
+													@if($product_detail->stock > 0)
+														@if($product_detail->stock < 5)
+															<span class="badge badge-warning">Low in stock</span>
+														@else
+															<span class="badge badge-success">Available</span>
+														@endif
+													@else
+														<span class="badge badge-danger">Out of stock</span>
+													@endif
+												</p>
 											</div>
 											<!--/ End Product Buy -->
 											<!-- Visit 'codeastro' for more projects -->
@@ -338,8 +322,8 @@
 											@php 
 												$photo=explode(',',$data->photo);
 											@endphp
-                                            <img class="default-img" src="{{$photo[0]}}" alt="{{$photo[0]}}">
-                                            <img class="hover-img" src="{{$photo[0]}}" alt="{{$photo[0]}}">
+                                            <img class="default-img" src="{{$photo[0]}}" alt="{{$data->title}}">
+                                            <img class="hover-img" src="{{$photo[1] ?? $photo[0]}}" alt="{{$data->title}}">
                                             <span class="price-dec">{{$data->discount}} % Off</span>
                                                                     {{-- <span class="out-of-stock">Hot</span> --}}
                                         </a>
@@ -522,7 +506,7 @@
 		float: right;
 		padding-left: 2px;
 		cursor: pointer;
-		color: #F7941D;
+		color: #111111;
 		font-size: 16px;
 		margin-top: 5px;
 		}
@@ -541,42 +525,215 @@
 		content: "\F005";
 		}
 
+		/* Product Gallery & Thumbnails Spacing */
+		.product-gallery {
+			margin-bottom: 30px !important;
+			position: relative !important;
+		}
+		.product-gallery .flex-control-nav.flex-control-thumbs {
+			position: relative !important;
+			margin-top: 15px !important;
+			margin-bottom: 25px !important;
+			display: flex !important;
+			flex-wrap: wrap !important;
+			gap: 10px !important;
+			z-index: 1 !important;
+		}
+		.product-gallery .flex-control-nav.flex-control-thumbs li {
+			margin: 0 !important;
+		}
+		.product-gallery .flex-control-nav.flex-control-thumbs li img {
+			border: 2px solid #e5e5e5 !important;
+			border-radius: 4px !important;
+			transition: all 0.2s ease !important;
+			cursor: pointer !important;
+		}
+		.product-gallery .flex-control-nav.flex-control-thumbs li img.flex-active,
+		.product-gallery .flex-control-nav.flex-control-thumbs li img:hover {
+			border-color: #000000 !important;
+		}
+
+		/* Product Info Tabs Fix (No Overlap & Pure Black & White) */
+		.product-info {
+			margin-top: 40px !important;
+			clear: both !important;
+			border: 1px solid #eaeaeb !important;
+			border-radius: 6px !important;
+			padding: 25px !important;
+			background: #ffffff !important;
+		}
+		.product-info .nav-tabs {
+			border-bottom: none !important;
+			margin-bottom: 25px !important;
+		}
+		.product-info .nav-tabs .nav-item {
+			margin-bottom: 0 !important;
+		}
+		.product-info .nav-tabs .nav-link {
+			background: #f5f5f5 !important;
+			color: #111111 !important;
+			border: 1px solid #e0e0e0 !important;
+			font-weight: 600 !important;
+			padding: 10px 24px !important;
+			border-radius: 4px !important;
+			margin-right: 8px !important;
+		}
+		.product-info .nav-tabs .nav-link:hover {
+			background: #e5e5e5 !important;
+			color: #000000 !important;
+		}
+		.product-info .nav-tabs .nav-link.active {
+			background: #000000 !important;
+			color: #ffffff !important;
+			border-color: #000000 !important;
+		}
+
+		/* Remove Top Spacing Between Navbar & Product Detail */
+		.shop.single.section,
+		.shop.single {
+			padding-top: 15px !important;
+		}
+		.shop.single .product-gallery,
+		.shop.single .product-des {
+			margin-top: 0 !important;
+		}
+
+		/* Image Magnifier / Hover Zoom Lens */
+		.product-gallery .slides li {
+			position: relative !important;
+			overflow: hidden !important;
+			cursor: crosshair !important;
+		}
+		.product-gallery .slides li img {
+			transition: transform 0.12s ease-out !important;
+			pointer-events: none !important;
+		}
+		.img-magnifier-lens {
+			position: absolute !important;
+			border: 1.5px solid #333333 !important;
+			width: 160px !important;
+			height: 160px !important;
+			background: rgba(255, 255, 255, 0.2) !important;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.25) !important;
+			pointer-events: none !important;
+			display: none;
+			z-index: 10 !important;
+		}
+
+		/* Product Detail Pure Black & White Styling */
+		.product-gallery img,
+		.product-gallery .slides li img {
+			max-height: 70vh !important;
+			width: auto !important;
+			max-width: 100% !important;
+			object-fit: contain !important;
+			margin: 0 auto !important;
+		}
+		.product-des .price .discount {
+			color: #000000 !important;
+			font-weight: 700 !important;
+			font-size: 24px !important;
+			margin-right: 12px !important;
+		}
+		.product-des .price s {
+			color: #888888 !important;
+			font-size: 16px !important;
+		}
+		.product-des .rating i {
+			color: #111111 !important;
+		}
+		.product-des .rating i.fa-star-o {
+			color: #cccccc !important;
+		}
+		.product-des .size ul li a {
+			border: 1px solid #d0d0d0 !important;
+			color: #111111 !important;
+			border-radius: 4px !important;
+			padding: 6px 14px !important;
+			font-weight: 500 !important;
+			background: #ffffff !important;
+		}
+		.product-des .size ul li a:hover,
+		.product-des .size ul li.active a {
+			background: #000000 !important;
+			color: #ffffff !important;
+			border-color: #000000 !important;
+		}
+		.product-des .input-group .btn-number:hover {
+			background: #000000 !important;
+			color: #ffffff !important;
+		}
 	</style>
 @endpush
 @push('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+<script>
+$(document).ready(function(){
+	// Add magnifier lens box to gallery slides
+	$('.product-gallery .slides li').each(function(){
+		if(!$(this).find('.img-magnifier-lens').length){
+			$(this).append('<div class="img-magnifier-lens"></div>');
+		}
+	});
 
-    {{-- <script>
-        $('.cart').click(function(){
-            var quantity=$('#quantity').val();
-            var pro_id=$(this).data('id');
-            // alert(quantity);
-            $.ajax({
-                url:"{{route('add-to-cart')}}",
-                type:"POST",
-                data:{
-                    _token:"{{csrf_token()}}",
-                    quantity:quantity,
-                    pro_id:pro_id
-                },
-                success:function(response){
-                    console.log(response);
-					if(typeof(response)!='object'){
-						response=$.parseJSON(response);
-					}
-					if(response.status){
-						swal('success',response.msg,'success').then(function(){
-							document.location.href=document.location.href;
-						});
-					}
-					else{
-                        swal('error',response.msg,'error').then(function(){
-							document.location.href=document.location.href;
-						});
-                    }
-                }
-            })
-        });
-    </script> --}}
+	// Hover & Mousemove Magnifier Zoom Effect
+	$(document).on('mousemove', '.product-gallery .slides li', function(e){
+		const $container = $(this);
+		const $img = $container.find('img');
+		let $lens = $container.find('.img-magnifier-lens');
 
+		if(!$lens.length){
+			$container.append('<div class="img-magnifier-lens"></div>');
+			$lens = $container.find('.img-magnifier-lens');
+		}
+
+		const offset = $container.offset();
+		const mouseX = e.pageX - offset.left;
+		const mouseY = e.pageY - offset.top;
+
+		const containerW = $container.width();
+		const containerH = $container.height();
+
+		if(mouseX >= 0 && mouseX <= containerW && mouseY >= 0 && mouseY <= containerH){
+			const xPercent = (mouseX / containerW) * 100;
+			const yPercent = (mouseY / containerH) * 100;
+
+			$img.css({
+				'transform-origin': xPercent + '% ' + yPercent + '%',
+				'transform': 'scale(2.2)'
+			});
+
+			const lensW = $lens.width() || 160;
+			const lensH = $lens.height() || 160;
+			let lensX = mouseX - (lensW / 2);
+			let lensY = mouseY - (lensH / 2);
+
+			if (lensX < 0) lensX = 0;
+			if (lensY < 0) lensY = 0;
+			if (lensX > containerW - lensW) lensX = containerW - lensW;
+			if (lensY > containerH - lensH) lensY = containerH - lensH;
+
+			$lens.css({
+				'left': lensX + 'px',
+				'top': lensY + 'px',
+				'display': 'block'
+			});
+		} else {
+			$img.css({
+				'transform': 'scale(1)',
+				'transform-origin': 'center center'
+			});
+			$lens.hide();
+		}
+	});
+
+	$(document).on('mouseleave', '.product-gallery .slides li', function(){
+		$(this).find('img').css({
+			'transform': 'scale(1)',
+			'transform-origin': 'center center'
+		});
+		$(this).find('.img-magnifier-lens').hide();
+	});
+});
+</script>
 @endpush

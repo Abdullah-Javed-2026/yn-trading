@@ -3,23 +3,6 @@
 @section('title','Ecommerce Laravel || PRODUCT PAGE')
 
 @section('main-content')
-	
-		<!-- Breadcrumbs -->
-		<div class="breadcrumbs">
-			<div class="container">
-				<div class="row">
-					<div class="col-12">
-						<div class="bread-inner">
-							<ul class="bread-list">
-								<li><a href="{{route('home')}}">Home<i class="ti-arrow-right"></i></a></li>
-								<li class="active"><a href="javascript:void(0);">Shop List</a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- End Breadcrumbs -->
 		<form action="{{route('shop.filter')}}" method="POST">
 		@csrf
 			<!-- Product Style 1 -->
@@ -119,7 +102,7 @@
                                                 @php
                                                     $org=($product->price-($product->price*$product->discount)/100);
                                                 @endphp
-                                                <p class="price"><del class="text-muted">${{number_format($product->price,2)}}</del>   ${{number_format($org,2)}}  </p>                                                
+                                                <p class="price"><del class="text-muted">PKR.{{number_format($product->price,0)}}</del>   PKR.{{number_format($org,0)}}  </p>                                                
                                             </div>
                                         </div>
                                         <!-- End Single Post -->
@@ -190,8 +173,8 @@
 															@php 
 																$photo=explode(',',$product->photo);
 															@endphp
-															<img class="default-img" src="{{$photo[0]}}" alt="{{$photo[0]}}">
-															<img class="hover-img" src="{{$photo[0]}}" alt="{{$photo[0]}}">
+															<img class="default-img" src="{{$photo[0]}}" alt="{{$product->title}}">
+															<img class="hover-img" src="{{$photo[1] ?? $photo[0]}}" alt="{{$product->title}}">
 															</a>
 															<div class="button-head">
 																<div class="product-action">
@@ -209,11 +192,10 @@
 													<div class="list-content">
 														<div class="product-content">
 															<div class="product-price">
-																@php
-																	$after_discount=($product->price-($product->price*$product->discount)/100);
-																@endphp
-																<span>${{number_format($after_discount,2)}}</span>
-																<del>${{number_format($product->price,2)}}</del>
+																<span>PKR.{{number_format($after_discount,0)}}</span>
+																@if($product->discount)
+																	<del>PKR.{{number_format($product->price,0)}}</del>
+																@endif
 															</div>
 															<h3 class="title"><a href="{{route('product-detail',$product->slug)}}">{{$product->title}}</a></h3>
 														{{-- <p>{!! html_entity_decode($product->summary) !!}</p> --}}
@@ -305,7 +287,7 @@
 												@php
 													$after_discount=($product->price-($product->price*$product->discount)/100);
 												@endphp
-												<h3><small><del class="text-muted">${{number_format($product->price,2)}}</del></small>    ${{number_format($after_discount,2)}}  </h3>
+												<h3><small><del class="text-muted">PKR.{{number_format($product->price,0)}}</del></small>    PKR.{{number_format($after_discount,0)}}  </h3>
 												<div class="quickview-peragraph">
 													<p>{!! html_entity_decode($product->summary) !!}</p>
 												</div>

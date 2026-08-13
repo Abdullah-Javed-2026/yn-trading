@@ -1,5 +1,13 @@
 @extends('frontend.layouts.master')
 @section('title','Ecommerce Laravel || HOME PAGE')
+@push('styles')
+<style>
+	.popular-slider .owl-stage {
+		transition-timing-function: linear !important;
+		-webkit-transition-timing-function: linear !important;
+	}
+</style>
+@endpush
 @section('main-content')
 <!-- Slider Area -->
 @if(count($banners)>0)
@@ -219,8 +227,8 @@
                                         $photo=explode(',',$product->photo);
                                     // dd($photo);
                                     @endphp
-                                    <img class="default-img" src="{{$photo[0]}}" alt="{{$photo[0]}}">
-                                    <img class="hover-img" src="{{$photo[0]}}" alt="{{$photo[0]}}">
+                                    <img class="default-img" src="{{$photo[0]}}" alt="{{$product->title}}">
+                                    <img class="hover-img" src="{{$photo[1] ?? $photo[0]}}" alt="{{$product->title}}">
                                     {{-- <span class="out-of-stock">Hot</span> --}}
                                 </a>
                             </div>
@@ -299,50 +307,6 @@
 
 
 
-<!-- Start Shop Services Area -->
-<section class="shop-services section home">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-3 col-md-6 col-12">
-                <!-- Start Single Service -->
-                <div class="single-service">
-                    <i class="ti-rocket"></i>
-                    <h4>Free shiping</h4>
-                    <p>Orders over $100</p>
-                </div>
-                <!-- End Single Service -->
-            </div>
-            <div class="col-lg-3 col-md-6 col-12">
-                <!-- Start Single Service -->
-                <div class="single-service">
-                    <i class="ti-reload"></i>
-                    <h4>Free Return</h4>
-                    <p>Within 30 days returns</p>
-                </div>
-                <!-- End Single Service -->
-            </div>
-            <div class="col-lg-3 col-md-6 col-12">
-                <!-- Start Single Service -->
-                <div class="single-service">
-                    <i class="ti-lock"></i>
-                    <h4>Sucure Payment</h4>
-                    <p>100% secure payment</p>
-                </div>
-                <!-- End Single Service -->
-            </div>
-            <div class="col-lg-3 col-md-6 col-12">
-                <!-- Start Single Service -->
-                <div class="single-service">
-                    <i class="ti-tag"></i>
-                    <h4>Best Peice</h4>
-                    <p>Guaranteed price</p>
-                </div>
-                <!-- End Single Service -->
-            </div>
-        </div>
-    </div>
-</section>
-<!-- End Shop Services Area -->
 
 @include('frontend.layouts.newsletter')
 

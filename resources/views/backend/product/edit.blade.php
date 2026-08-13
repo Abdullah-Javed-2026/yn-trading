@@ -132,6 +132,7 @@
               </span>
           <input id="thumbnail" class="form-control" type="text" name="photo" value="{{$product->photo}}">
         </div>
+       
         <div id="holder" style="margin-top:15px;max-height:100px;"></div>
           @error('photo')
           <span class="text-danger">{{$message}}</span>
@@ -169,6 +170,7 @@
 
 <script>
     $('#lfm').filemanager('image');
+</script>
 
     $(document).ready(function() {
     $('#summary').summernote({

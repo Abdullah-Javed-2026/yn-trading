@@ -685,7 +685,7 @@ Version:1.0
 	font-weight: 400;
 }
 .header.shop .nice-select .list li:hover{
-	background:#8C52FF;
+	background:#000000;
 	color:#fff;
 }
 .header.shop .search-bar form {
@@ -2262,7 +2262,7 @@ Version:1.0
 	border-radius:0px;
 }
 .shop .nice-select .list li:hover{
-	background:#8C52FF;
+	background:#000000;
 	color:#fff;
 }
 .shop .view-mode {
@@ -2328,7 +2328,7 @@ Version:1.0
 	border:1px solid transparent;
 }
 .shop.single .flex-control-thumbs li img.flex-active{
-	border-color:#8C52FF;
+	border-color:#000000;
 }
 .shop.single .flex-direction-nav{
 	display:none;
@@ -2358,7 +2358,7 @@ Version:1.0
 	display:inline-block;
 }
 .shop.single .product-des .total-review:hover{
-	color:#8C52FF;
+	color:#000000;
 }
 .shop.single .product-des  .rating{
 	margin-top:20px;
@@ -2368,7 +2368,7 @@ Version:1.0
 	display:inline-block;
 }
 .shop.single .product-des .rating li i{
-	color:#8C52FF;
+	color:#111111;
 }
 .shop.single .product-des .rating li.dark i{
 	color:#555;
@@ -2385,7 +2385,7 @@ Version:1.0
 .shop.single .product-des .price span{
 	display:inline-block;
 	margin-right:15px;
-	color:#8C52FF;
+	color:#000000;
 }
 .shop.single .product-des .product-buy {
 	margin-top: 40px;
@@ -2440,7 +2440,7 @@ Version:1.0
 	background:#3498db;
 }
 .shop.single .product-des .color ul li .two{
-	background:#8C52FF;
+	background:#000000;
 }
 .shop.single .product-des .color ul li .three{
 	background:#8e44ad;
@@ -2479,7 +2479,7 @@ Version:1.0
 	font-size: 14px;
 }
 .shop.single .product-des .size ul li a:hover{
-	color:#8C52FF;
+	color:#000000;
 }
 .shop.single .quantity {
 	display: inline-block;
@@ -2523,7 +2523,7 @@ Version:1.0
 	border: none;
 }
 .shop.single .quantity .button .btn:hover{
-	color:#8C52FF;
+	color:#000000;
 }
 .shop.single .quantity .input-number {
 	border: 1px solid #eceded;
@@ -2553,7 +2553,7 @@ Version:1.0
 }
 .shop.single .add-to-cart .btn:hover{
 	color:#fff;
-	background:#8C52FF;
+	background:#000000;
 }
 .shop.single .add-to-cart .btn.min {
 	padding: 0 20px;
@@ -2573,7 +2573,7 @@ Version:1.0
 	margin-left:10px;
 }
 .shop.single .cat a:hover{
-	color:#8C52FF;
+	color:#000000;
 }
 .shop.single .availability{
 	color:#333;
@@ -2608,7 +2608,7 @@ Version:1.0
 }
 .shop.single .nav-tabs li a.active,
 .shop.single .nav-tabs li:hover a{
-	background:#8C52FF;
+	background:#000000;
 	color:#fff;
 	border-color:transparent;
 }
@@ -2639,7 +2639,7 @@ Version:1.0
 	top: 9px;
 	height: 7px;
 	width: 7px;
-	background: #8C52FF;
+	background: #000000;
 	border-radius: 50%;
 }
 .shop.single .single-des p{}
@@ -2702,7 +2702,7 @@ Version:1.0
 	display:inline-block;
 }
 .shop.single .ratting-main .single-rating ul li i{
-	color:#8C52FF;
+	color:#111111;
 	font-size:14px;
 }
 .shop.single .review-inner label {
