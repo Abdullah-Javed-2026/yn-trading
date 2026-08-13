@@ -8,14 +8,16 @@
 					<div class="col-lg-5 col-md-6 col-12">
 						<!-- Single Widget -->
 						<div class="single-footer about">
-							<div class="logo">
-								<a href="index.html"><img src="{{asset('backend/img/avatar.png')}}" alt="#"></a>
-							</div>
 							@php
 								$settings=DB::table('settings')->get();
 							@endphp
-							<p class="text">@if(count($settings) > 0 && !empty($settings[0]->short_des)) @foreach($settings as $data) {{$data->short_des}} @endforeach @else Welcome to Sanaulla Store, Pakistan's premier online fashion store. Discover the finest collection of designer unstitched suits, pret wear, luxury lawn, and traditional Pakistani apparel. @endif</p>
-							<p class="call">Got Question? Call us 24/7<span><a href="tel:+923001234567">@if(count($settings) > 0 && !empty($settings[0]->phone)) @foreach($settings as $data) {{$data->phone}} @endforeach @else +92 300 1234567 @endif</a></span></p>
+							<div class="logo">
+								<a href="{{route('home')}}">
+									<img src="@foreach($settings as $data) {{$data->logo}} @endforeach" alt="logo" style="max-height: 50px;">
+								</a>
+							</div>
+							<p class="text">Welcome to Sanaulla Store, Pakistan's premier online fashion store. Discover the finest collection of designer unstitched suits, pret wear, luxury lawn, and traditional Pakistani apparel.</p>
+							<p class="call">Got Question? Call us 24/7<span><a href="tel:+923001234567">+92 300 1234567</a></span></p>
 						</div>
 						<!-- End Single Widget -->
 					</div>
@@ -54,9 +56,9 @@
 							<!-- Single Widget -->
 							<div class="contact">
 								<ul>
-									<li>@if(count($settings) > 0 && !empty($settings[0]->address)) @foreach($settings as $data) {{$data->address}} @endforeach @else Tariq Road, PECHS Block 2, Karachi, Pakistan @endif</li>
-									<li>@if(count($settings) > 0 && !empty($settings[0]->email)) @foreach($settings as $data) {{$data->email}} @endforeach @else info@sanaullastore.com @endif</li>
-									<li>@if(count($settings) > 0 && !empty($settings[0]->phone)) @foreach($settings as $data) {{$data->phone}} @endforeach @else +92 300 1234567 @endif</li>
+									<li>Tariq Road, PECHS Block 2, Karachi, Pakistan</li>
+									<li>info@sanaullastore.com</li>
+									<li>+92 300 1234567</li>
 								</ul>
 							</div>
 							<!-- End Single Widget -->
