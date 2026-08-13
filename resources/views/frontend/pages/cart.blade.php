@@ -1,23 +1,6 @@
 @extends('frontend.layouts.master')
 @section('title','Cart Page')
 @section('main-content')
-	<!-- Breadcrumbs -->
-	<div class="breadcrumbs">
-		<div class="container">
-			<div class="row">
-				<div class="col-12">
-					<div class="bread-inner">
-						<ul class="bread-list">
-							<li><a href="{{('home')}}">Home<i class="ti-arrow-right"></i></a></li>
-							<li class="active"><a href="">Cart</a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- End Breadcrumbs -->
-
 	<!-- Shopping Cart -->
 	<div class="shopping-cart section">
 		<div class="container">
@@ -67,21 +50,16 @@
 												</div>
 												<!--/ End Input Order -->
 											</td>
-											<td class="total-amount cart_single_price" data-title="Total"><span class="money">${{$cart['price']}}</span></td>
+											<td class="total-amount cart_single_price" data-title="Total"><span class="money">PKR {{number_format($cart['price'],0)}}</span></td>
 
 											<td class="action" data-title="Remove"><a href="{{route('cart-delete',$cart->id)}}"><i class="ti-trash remove-icon"></i></a></td>
 										</tr>
 									@endforeach
-									<track>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td class="float-right">
-											<button class="btn float-right" type="submit">Update</button>
+									<tr>
+										<td colspan="6" class="text-right py-3 border-0">
+											<button class="btn btn-dark float-right" type="submit">Update</button>
 										</td>
-									</track>
+									</tr>
 								@else
 										<tr>
 											<td class="text-center">

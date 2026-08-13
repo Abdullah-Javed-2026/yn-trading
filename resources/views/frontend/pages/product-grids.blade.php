@@ -79,9 +79,9 @@
                             {{-- {{$products}} --}}
                             @if(count($products)>0)
                                 @foreach($products as $product)
-                                    <div class="col-lg-3 col-md-4 col-6 px-2 px-sm-3">
-                                        <div class="single-product">
-                                            <div class="product-img">
+                                    <div class="col-lg-3 col-md-4 col-6 px-1 px-sm-2 mb-3">
+                                        <div class="single-product fashion-card">
+                                            <div class="product-img position-relative">
                                                 <a href="{{route('product-detail',$product->slug)}}">
                                                     @php
                                                         $photo=explode(',',$product->photo);
@@ -89,28 +89,33 @@
                                                     <img class="default-img" src="{{$photo[0]}}" alt="{{$product->title}}">
                                                     <img class="hover-img" src="{{$photo[1] ?? $photo[0]}}" alt="{{$product->title}}">
                                                     @if($product->discount)
-                                                                <span class="price-dec">{{$product->discount}} % Off</span>
+                                                        <span class="discount-badge">-{{$product->discount}}%</span>
+                                                    @elseif($product->condition == 'new')
+                                                        <span class="discount-badge bg-dark">NEW</span>
                                                     @endif
                                                 </a>
-                                                <div class="button-head">
-                                                    <div class="product-action">
-                                                        <a data-toggle="modal" data-target="#{{$product->id}}" title="Quick View" href="#"><i class=" ti-eye"></i><span>Quick Shop</span></a>
-                                                        <a title="Wishlist" href="{{route('add-to-wishlist',$product->slug)}}" class="wishlist" data-id="{{$product->id}}"><i class=" ti-heart "></i><span>Add to Wishlist</span></a>
-                                                    </div>
-                                                    <div class="product-action-2">
-                                                        <a title="Add to cart" href="{{route('add-to-cart',$product->slug)}}">Add to cart</a>
-                                                    </div>
-                                                </div>
+                                                
+                                                <!-- Top Right Wishlist Icon -->
+                                                <a title="Wishlist" href="{{route('add-to-wishlist',$product->slug)}}" class="card-wishlist-btn" data-id="{{$product->id}}">
+                                                    <i class="ti-heart"></i>
+                                                </a>
+
+                                                <!-- Bottom Right Floating Quick Add Bag Icon -->
+                                                <a title="Add to cart" href="{{route('add-to-cart',$product->slug)}}" class="card-quick-bag-btn" title="Add to Cart">
+                                                    <i class="ti-bag"></i>
+                                                </a>
                                             </div>
-                                            <div class="product-content">
-                                                <h3><a href="{{route('product-detail',$product->slug)}}">{{$product->title}}</a></h3>
+                                            <div class="product-content pt-2 px-1">
+                                                <h3 class="product-title-text"><a href="{{route('product-detail',$product->slug)}}">{{$product->title}}</a></h3>
                                                 @php
                                                     $after_discount=($product->price-($product->price*$product->discount)/100);
                                                 @endphp
-                                                <span>PKR {{number_format($after_discount,0)}}</span>
-                                                @if($product->discount)
-                                                    <del style="padding-left:4%;">PKR {{number_format($product->price,0)}}</del>
-                                                @endif
+                                                <div class="price-box d-flex align-items-center flex-wrap">
+                                                    <span class="current-price">PKR.{{number_format($after_discount,0)}}</span>
+                                                    @if($product->discount)
+                                                        <del class="old-price ml-2">PKR.{{number_format($product->price,0)}}</del>
+                                                    @endif
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

@@ -121,7 +121,7 @@
                             </ul>
                             <!--/ End Tab Nav -->
                         </div>
-                        <div class="tab-content isotope-grid" id="myTabContent">
+                        <div class="tab-content isotope-grid row" id="myTabContent">
     @php
         $recentlyAddedProducts = DB::table('products')
             ->where('status', 'active')
@@ -131,35 +131,43 @@
     @endphp
 
     @foreach($recentlyAddedProducts as $key => $product)
-        <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item {{$product->cat_id}}">
-            <div class="single-product">
-                <div class="product-img">
+        <div class="col-6 col-md-4 col-lg-3 px-1 px-sm-2 mb-3 isotope-item {{$product->cat_id}}">
+            <div class="single-product fashion-card">
+                <div class="product-img position-relative">
                     <a href="{{route('product-detail', $product->slug)}}">
                         @php
                             $photos = explode(',', $product->photo);
                         @endphp
-                        <img class="default-img" src="{{$photos[0]}}" alt="{{$photos[0]}}">
-                        <img class="hover-img" src="{{$photos[0]}}" alt="{{$photos[0]}}">
-                         @if($product->stock <= 0)
-                            <span class="out-of-stock">Sold Out</span>
-                         @elseif($product->discount > 0)
-                            <span class="price-dec">-{{$product->discount}}%</span>
-                         @elseif($product->condition == 'new')
-                            <span class="new">New</span>
-                         @elseif($product->condition == 'hot')
-                            <span class="hot">Hot</span>
-                         @endif
+                        <img class="default-img" src="{{$photos[0]}}" alt="{{$product->title}}">
+                        <img class="hover-img" src="{{$photos[1] ?? $photos[0]}}" alt="{{$product->title}}">
+                        @if($product->stock <= 0)
+                            <span class="discount-badge bg-dark">Sold Out</span>
+                        @elseif($product->discount > 0)
+                            <span class="discount-badge">-{{$product->discount}}%</span>
+                        @elseif($product->condition == 'new')
+                            <span class="discount-badge bg-dark">NEW</span>
+                        @endif
+                    </a>
+
+                    <!-- Top Right Wishlist Icon -->
+                    <a title="Wishlist" href="{{route('add-to-wishlist',$product->slug)}}" class="card-wishlist-btn" data-id="{{$product->id}}">
+                        <i class="ti-heart"></i>
+                    </a>
+
+                    <!-- Bottom Right Floating Quick Add Bag Icon -->
+                    <a title="Add to cart" href="{{route('add-to-cart',$product->slug)}}" class="card-quick-bag-btn">
+                        <i class="ti-bag"></i>
                     </a>
                 </div>
-                <div class="product-content">
-                    <h3><a href="{{route('product-detail', $product->slug)}}">{{$product->title}}</a></h3>
+                <div class="product-content pt-2 px-1">
+                    <h3 class="product-title-text"><a href="{{route('product-detail', $product->slug)}}">{{$product->title}}</a></h3>
                     @php
                         $after_discount = ($product->price - ($product->price * $product->discount) / 100);
                     @endphp
-                    <div class="product-price">
-                        <span>PKR {{number_format($after_discount, 0)}}</span>
+                    <div class="price-box d-flex align-items-center flex-wrap">
+                        <span class="current-price">PKR.{{number_format($after_discount, 0)}}</span>
                         @if($product->discount > 0)
-                            <del>PKR {{number_format($product->price, 0)}}</del>
+                            <del class="old-price ml-2">PKR.{{number_format($product->price, 0)}}</del>
                         @endif
                     </div>
                 </div>
@@ -272,29 +280,45 @@
                         $product_lists=DB::table('products')->where('status','active')->orderBy('id','DESC')->limit(6)->get();
                     @endphp
                     @foreach($product_lists as $product)
-                        <div class="col-md-4">
-                            <!-- Start Single List  -->
-                            <div class="single-list">
-                                <div class="row">
-                                <div class="col-lg-6 col-md-6 col-12">
-                                    <div class="list-image overlay">
+                        <div class="col-6 col-md-4 col-lg-4 px-1 px-sm-2 mb-3">
+                            <div class="single-product fashion-card">
+                                <div class="product-img position-relative">
+                                    <a href="{{route('product-detail', $product->slug)}}">
                                         @php
-                                            $photo=explode(',',$product->photo);
-                                            // dd($photo);
+                                            $photos = explode(',', $product->photo);
                                         @endphp
-                                        <img src="{{$photo[0]}}" alt="{{$photo[0]}}">
-                                        <a href="{{route('add-to-cart',$product->slug)}}" class="buy"><i class="fa fa-shopping-bag"></i></a>
-                                    </div>
+                                        <img class="default-img" src="{{$photos[0]}}" alt="{{$product->title}}">
+                                        <img class="hover-img" src="{{$photos[1] ?? $photos[0]}}" alt="{{$product->title}}">
+                                        @if($product->discount > 0)
+                                            <span class="discount-badge">-{{number_format($product->discount, 0)}}%</span>
+                                        @elseif($product->condition == 'new')
+                                            <span class="discount-badge bg-dark">NEW</span>
+                                        @endif
+                                    </a>
+
+                                    <!-- Top Right Wishlist Icon -->
+                                    <a title="Wishlist" href="{{route('add-to-wishlist',$product->slug)}}" class="card-wishlist-btn" data-id="{{$product->id}}">
+                                        <i class="ti-heart"></i>
+                                    </a>
+
+                                    <!-- Bottom Right Floating Quick Add Bag Icon -->
+                                    <a title="Add to cart" href="{{route('add-to-cart',$product->slug)}}" class="card-quick-bag-btn">
+                                        <i class="ti-bag"></i>
+                                    </a>
                                 </div>
-                                <div class="col-lg-6 col-md-6 col-12 no-padding">
-                                    <div class="content">
-                                        <h4 class="title"><a href="{{route('product-detail',$product->slug)}}">{{$product->title}}</a></h4>
-                                        <p class="price with-discount">{{number_format($product->discount,2)}}% OFF</p>
+                                <div class="product-content pt-2 px-1">
+                                    <h3 class="product-title-text"><a href="{{route('product-detail', $product->slug)}}">{{$product->title}}</a></h3>
+                                    @php
+                                        $after_discount = ($product->price - ($product->price * $product->discount) / 100);
+                                    @endphp
+                                    <div class="price-box d-flex align-items-center flex-wrap">
+                                        <span class="current-price">PKR.{{number_format($after_discount, 0)}}</span>
+                                        @if($product->discount > 0)
+                                            <del class="old-price ml-2">PKR.{{number_format($product->price, 0)}}</del>
+                                        @endif
                                     </div>
-                                </div>
                                 </div>
                             </div>
-                            <!-- End Single List  -->
                         </div>
                     @endforeach
 
@@ -504,16 +528,15 @@
 
         // init Isotope
         $(window).on('load', function () {
-            var $grid = $topeContainer.each(function () {
-                $(this).isotope({
+            $topeContainer.each(function () {
+                var $grid = $(this).isotope({
                     itemSelector: '.isotope-item',
                     layoutMode: 'fitRows',
-                    percentPosition: true,
-                    animationEngine : 'best-available',
-                    masonry: {
-                        columnWidth: '.isotope-item'
-                    }
+                    percentPosition: true
                 });
+                setTimeout(function(){
+                    $grid.isotope('layout');
+                }, 300);
             });
         });
 
