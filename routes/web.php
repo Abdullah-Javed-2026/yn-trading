@@ -27,26 +27,6 @@ Route::post('password-reset', 'FrontendController@showResetForm')->name('passwor
 Route::get('login/{provider}/', 'Auth\LoginController@redirect')->name('login.redirect');
 Route::get('login/{provider}/callback/', 'Auth\LoginController@Callback')->name('login.callback');
 
-Route::get('/symlink', function () {
-    $target = storage_path('app/public');
-    $shortcut = public_path('storage');
-
-    if (file_exists($shortcut) || is_link($shortcut)) {
-        @unlink($shortcut);
-    }
-
-    if (@symlink($target, $shortcut)) {
-        return "✓ Storage symlink successfully created!<br>Target: {$target}<br>Shortcut: {$shortcut}";
-    }
-
-    try {
-        Artisan::call('storage:link');
-        return "✓ Artisan storage:link executed successfully!";
-    } catch (\Throwable $e) {
-        return "Error creating symlink: " . $e->getMessage();
-    }
-});
-
 Route::get('/','FrontendController@home')->name('home');
 
 // Frontend Routes
