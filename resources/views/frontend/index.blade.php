@@ -102,18 +102,18 @@
                     <div class="product-info">
                         <div class="nav-main">
                             <!-- Tab Nav -->
-                            <ul class="nav nav-tabs filter-tope-group" id="myTab" role="tablist">
+                            <ul class="nav nav-tabs filter-tope-group d-flex flex-wrap justify-content-center border-0 mb-4" id="myTab" role="tablist" style="gap: 8px 10px;">
                                 @php
                                     $categories=DB::table('categories')->where('status','active')->where('is_parent',1)->get();
                                     // dd($categories);
                                 @endphp
                                 @if($categories)
-                                <button class="btn" style="background:black"data-filter="*">
+                                <button class="btn my-1 mx-1" style="background: #000000; color: #ffffff; border-radius: 6px; padding: 8px 18px; font-size: 13px; font-weight: 500;" data-filter="*">
                                     Recently Added
                                 </button>
                                     @foreach($categories as $key=>$cat)
 
-                                    <button class="btn" style="background:none;color:black;"data-filter=".{{$cat->id}}">
+                                    <button class="btn my-1 mx-1" style="background: transparent; color: #000000; border: 1px solid #111111; border-radius: 6px; padding: 8px 18px; font-size: 13px; font-weight: 500;" data-filter=".{{$cat->id}}">
                                         {{$cat->title}}
                                     </button>
                                     @endforeach

@@ -1,4 +1,6 @@
 <!-- Meta Tag -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 @yield('meta')
 <!-- Title Tag  -->
 <title>@yield('title')</title>
@@ -142,6 +144,193 @@
     ul.rating li i,
     .rating li i {
         color: #111111 !important;
+    }
+
+    /* Header Alignment & Logo Rules */
+    .navbar-header-row {
+        padding: 12px 20px !important;
+        min-height: 58px;
+    }
+    .header-logo-img {
+        max-height: 42px;
+        width: auto;
+        object-fit: contain;
+        display: block;
+    }
+    .hamburger-menu-btn, .action-icon-link, .action-icon-btn {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        line-height: 1 !important;
+        vertical-align: middle !important;
+    }
+    #Gslider .carousel-indicators {
+        bottom: 12px !important;
+        margin-bottom: 0 !important;
+        z-index: 10 !important;
+    }
+    #Gslider .carousel-indicators li {
+        width: 22px !important;
+        height: 3px !important;
+        border-radius: 2px !important;
+        background-color: rgba(255, 255, 255, 0.6) !important;
+        border: none !important;
+        margin: 0 4px !important;
+    }
+    #Gslider .carousel-indicators li.active {
+        background-color: #ffffff !important;
+        width: 30px !important;
+    }
+    .section-title h2::before,
+    .section-title h2::after {
+        background: #000000 !important;
+    }
+    .filter-tope-group button.btn {
+        margin: 4px 6px !important;
+    }
+
+    /* ==========================================
+       Comprehensive Mobile Responsiveness
+    ========================================== */
+    @media (max-width: 767.98px) {
+        /* General Page & Section Spacing */
+        .section {
+            padding: 25px 0 !important;
+        }
+        .container-fluid.px-4 {
+            padding-left: 12px !important;
+            padding-right: 12px !important;
+        }
+
+        /* Header Navigation Mobile Fixes */
+        .top-announcement-bar {
+            font-size: 11px !important;
+            padding: 5px 0 !important;
+        }
+        .navbar-header-row {
+            padding: 8px 10px !important;
+            min-height: 50px !important;
+        }
+        .header-logo-img {
+            max-height: 32px !important;
+        }
+        .hamburger-menu-btn {
+            font-size: 22px !important;
+            padding: 4px 6px !important;
+        }
+        .action-icon-link, .action-icon-btn {
+            font-size: 20px !important;
+            padding: 4px !important;
+        }
+        .icon-item.mr-3 {
+            margin-right: 8px !important;
+        }
+
+        /* Home Banner Slider Fix */
+        #Gslider {
+            background: #ffffff !important;
+            position: relative !important;
+        }
+        #Gslider .carousel-inner,
+        #Gslider .carousel-item {
+            background: #ffffff !important;
+            height: auto !important;
+            min-height: 0 !important;
+        }
+        #Gslider .carousel-item img {
+            width: 100% !important;
+            height: auto !important;
+            max-height: 420px !important;
+            object-fit: cover !important;
+        }
+        #Gslider .carousel-indicators {
+            bottom: 8px !important;
+            margin-bottom: 0 !important;
+            z-index: 10 !important;
+        }
+        #Gslider .carousel-indicators li {
+            width: 18px !important;
+            height: 3px !important;
+            border-radius: 2px !important;
+            background-color: rgba(255, 255, 255, 0.6) !important;
+            border: none !important;
+            margin: 0 3px !important;
+        }
+        #Gslider .carousel-indicators li.active {
+            background-color: #ffffff !important;
+            width: 24px !important;
+        }
+
+        /* Shop Filter Bar Mobile Layout */
+        .shop-top {
+            padding: 10px 12px !important;
+        }
+        .shop-top .d-flex.justify-content-between {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 8px !important;
+        }
+        .shop-top .d-flex.flex-wrap {
+            width: 100% !important;
+            justify-content: space-between !important;
+        }
+        .shop-top .d-flex.align-items-center {
+            margin-right: 0 !important;
+            flex: 1 1 calc(50% - 6px) !important;
+            min-width: 130px !important;
+        }
+        .shop-top select.form-control-sm {
+            width: 100% !important;
+            min-width: 0 !important;
+            font-size: 12px !important;
+            height: 34px !important;
+        }
+        .shop-top label {
+            font-size: 11px !important;
+            margin-right: 4px !important;
+        }
+
+        /* Product Cards 2-Column Mobile Grid */
+        .single-product {
+            margin-bottom: 20px !important;
+        }
+        .single-product .product-content h3 {
+            font-size: 13px !important;
+            line-height: 1.3 !important;
+        }
+        .single-product .product-content span {
+            font-size: 13px !important;
+        }
+
+        /* Contact Page Mobile Fixes */
+        .contact-us .form-main {
+            padding: 20px 15px !important;
+        }
+        .contact-us .single-head {
+            padding: 20px 15px !important;
+            margin-top: 25px !important;
+        }
+        .contact-us .title h3 {
+            font-size: 20px !important;
+        }
+        .contact-us .form .form-group input,
+        .contact-us .form .form-group textarea {
+            font-size: 14px !important;
+        }
+
+        /* About Us Mobile Fixes */
+        .about-us .about-content h3 {
+            font-size: 22px !important;
+        }
+        .about-us .about-img {
+            margin-top: 25px !important;
+        }
+
+        /* Shopping Cart & Modal Mobile Adjustments */
+        .shopping-item {
+            width: 300px !important;
+            right: -10px !important;
+        }
     }
 </style>
 @stack('styles')

@@ -79,7 +79,7 @@
                             {{-- {{$products}} --}}
                             @if(count($products)>0)
                                 @foreach($products as $product)
-                                    <div class="col-lg-3 col-md-4 col-6">
+                                    <div class="col-lg-3 col-md-4 col-6 px-2 px-sm-3">
                                         <div class="single-product">
                                             <div class="product-img">
                                                 <a href="{{route('product-detail',$product->slug)}}">

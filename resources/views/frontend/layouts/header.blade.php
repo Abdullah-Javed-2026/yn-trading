@@ -17,22 +17,22 @@
     <!-- Main Minimalist Navbar -->
     <div class="main-navbar-bar">
         <div class="container-fluid custom-nav-container">
-            <div class="d-flex align-items-center justify-content-between py-2 px-4 border-bottom">
+            <div class="d-flex align-items-center justify-content-between navbar-header-row border-bottom">
                 
                 <!-- Left: Hamburger Menu Icon -->
-                <div class="nav-left-item">
+                <div class="nav-left-item d-flex align-items-center">
                     <button class="hamburger-menu-btn" type="button" id="menuToggleBtn" title="Open Sidebar Menu">
                         <i class="ti-menu"></i>
                     </button>
                 </div>
 
                 <!-- Center: Logo -->
-                <div class="nav-center-logo text-center">
+                <div class="nav-center-logo text-center d-flex align-items-center justify-content-center">
                     @php
                         $settings=DB::table('settings')->get();
                     @endphp                    
-                    <a href="{{route('home')}}" class="logo-link">
-                        <img src="@foreach($settings as $data) {{$data->logo}} @endforeach" alt="logo" style="max-height: 45px;">
+                    <a href="{{route('home')}}" class="logo-link d-inline-flex align-items-center">
+                        <img src="@foreach($settings as $data) {{$data->logo}} @endforeach" alt="logo" class="header-logo-img">
                     </a>
                 </div>
 
