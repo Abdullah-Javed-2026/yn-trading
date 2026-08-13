@@ -163,9 +163,6 @@
                 <a href="{{route('about-us')}}" class="sidebar-link">About Us</a>
             </li>
             <li class="sidebar-item">
-                <a href="{{route('blog')}}" class="sidebar-link">Blog</a>
-            </li>
-            <li class="sidebar-item">
                 <a href="{{route('contact')}}" class="sidebar-link">Contact Us</a>
             </li>
         </ul>
@@ -359,11 +356,17 @@
 }
 
 .sub-toggle-icon {
-    font-size: 14px;
-    color: #666666;
+    font-size: 16px;
+    color: #444444;
     cursor: pointer;
-    padding: 16px 0 16px 15px;
-    transition: transform 0.2s ease;
+    padding: 16px 20px;
+    margin-right: -20px;
+    transition: transform 0.25s ease, color 0.2s ease;
+    user-select: none;
+}
+
+.sub-toggle-icon:hover {
+    color: #000000;
 }
 
 .sidebar-item.open .sub-toggle-icon {
@@ -373,21 +376,25 @@
 .sidebar-sub-menu {
     list-style: none;
     margin: 0;
-    padding: 0 0 10px 30px;
+    padding: 5px 0 15px 35px;
     display: none;
-    background-color: #fafafa;
+    background-color: #fcfcfc;
+    border-top: 1px dashed #efefef;
 }
 
 .sidebar-sub-menu li a {
     display: block;
-    padding: 10px 0;
+    padding: 8px 0;
     font-size: 14px;
+    font-weight: 400;
     color: #555555 !important;
     text-decoration: none !important;
+    transition: color 0.2s ease, padding-left 0.2s ease;
 }
 
 .sidebar-sub-menu li a:hover {
     color: #000000 !important;
+    font-weight: 600;
 }
 </style>
 

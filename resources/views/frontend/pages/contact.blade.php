@@ -1,25 +1,10 @@
 @extends('frontend.layouts.master')
 
+@section('title','YN Trading || Contact Us')
+
 @section('main-content')
-	<!-- Breadcrumbs -->
-	<div class="breadcrumbs">
-		<div class="container">
-			<div class="row">
-				<div class="col-12">
-					<div class="bread-inner">
-						<ul class="bread-list">
-							<li><a href="{{route('home')}}">Home<i class="ti-arrow-right"></i></a></li>
-							<li class="active"><a href="javascript:void(0);">Contact</a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- End Breadcrumbs -->
-  
 	<!-- Start Contact -->
-	<section id="contact-us" class="contact-us section">
+	<section id="contact-us" class="contact-us section" style="padding-top: 30px !important;">
 		<div class="container">
 				<div class="contact-head">
 					<div class="row">
@@ -67,7 +52,7 @@
 										</div>
 										<div class="col-12">
 											<div class="form-group button">
-												<button type="submit" class="btn ">Send Message</button>
+												<button type="submit" class="btn" style="background: #000000 !important; color: #ffffff !important; border: none !important;">Send Message</button>
 											</div>
 										</div>
 									</div>
@@ -87,7 +72,7 @@
 									<i class="fa fa-envelope-open"></i>
 									<h4 class="title">Email:</h4>
 									<ul>
-										<li><a href="mailto:info@yourwebsite.com">@foreach($settings as $data) {{$data->email}} @endforeach</a></li>
+										<li><a href="mailto:@foreach($settings as $data){{$data->email}}@endforeach">@foreach($settings as $data) {{$data->email}} @endforeach</a></li>
 									</ul>
 								</div>
 								<div class="single-info">
@@ -153,6 +138,24 @@
 
 @push('styles')
 <style>
+	.contact-us .title h4,
+	.contact-us .title h3 {
+		color: #000000 !important;
+	}
+	.contact-us .form .form-group input,
+	.contact-us .form .form-group textarea {
+		border-color: #dcdcdc !important;
+	}
+	.contact-us .single-info i {
+		background: #000000 !important;
+	}
+	.contact-us .single-info ul li a:hover {
+		color: #000000 !important;
+	}
+	.contact-us .form .form-group input:focus,
+	.contact-us .form .form-group textarea:focus {
+		border-color: #000000 !important;
+	}
 	.modal-dialog .modal-content .modal-header{
 		position:initial;
 		padding: 10px 20px;

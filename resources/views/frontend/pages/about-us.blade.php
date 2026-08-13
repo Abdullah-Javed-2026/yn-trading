@@ -1,49 +1,31 @@
 @extends('frontend.layouts.master')
 
-@section('title','Ecommerce Laravel || About Us')
+@section('title','YN Trading || About Us')
 
 @section('main-content')
 
-	<!-- Breadcrumbs -->
-	<div class="breadcrumbs">
-		<div class="container">
-			<div class="row">
-				<div class="col-12">
-					<div class="bread-inner">
-						<ul class="bread-list">
-							<li><a href="index1.html">Home<i class="ti-arrow-right"></i></a></li>
-							<li class="active"><a href="blog-single.html">About Us</a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- End Breadcrumbs -->
-
 	<!-- About Us -->
-	<section class="about-us section">
+	<section class="about-us section" style="padding-top: 30px !important;">
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-6 col-12">
 						<div class="about-content">
 							@php
-								$settings=DB::table('settings')->get();
+								$setting=DB::table('settings')->first();
+								$photos = ($setting && !empty($setting->photo)) ? explode(',', $setting->photo) : [];
+								$aboutPhoto = (count($photos) > 0 && !empty($photos[0])) ? trim($photos[0]) : asset('frontend/img/modal1.png');
 							@endphp
-							<h3>Welcome To <span>Ecommerce Laravel</span></h3>
-							<p>@foreach($settings as $data) {{$data->description}} @endforeach</p>
-							<div class="button">
-								<a href="{{route('blog')}}" class="btn">Our Blog</a>
-								<a href="{{route('contact')}}" class="btn primary">Contact Us</a>
+							<h3 style="color: #000000 !important; font-weight: 700;">Welcome To <span style="color: #000000 !important;">YN Trading</span></h3>
+							<p style="color: #555555; line-height: 1.8;">{!! html_entity_decode($setting->description ?? '') !!}</p>
+							<div class="button mt-4">
+								<a href="{{route('product-grids')}}" class="btn" style="background: #000000 !important; color: #ffffff !important; border: none !important;">Shop Now</a>
+								<a href="{{route('contact')}}" class="btn primary" style="background: #111111 !important; color: #ffffff !important; border: none !important;">Contact Us</a>
 							</div>
 						</div>
 					</div>
 					<div class="col-lg-6 col-12">
 						<div class="about-img overlay">
-							<div class="button">
-								<a href="https://www.youtube.com/watch?v=7edcgCdiHVU" class="video video-popup mfp-iframe"><i class="fa fa-play"></i></a>
-							</div>
-							<img src="@foreach($settings as $data) {{$data->photo}} @endforeach" alt="@foreach($settings as $data) {{$data->photo}} @endforeach">
+							<img src="{{$aboutPhoto}}" alt="About YN Trading">
 						</div>
 					</div>
 				</div>
@@ -60,8 +42,8 @@
 					<!-- Start Single Service -->
 					<div class="single-service">
 						<i class="ti-rocket"></i>
-						<h4>Free shiping</h4>
-						<p>Orders over $100</p>
+						<h4>Free Shipping</h4>
+						<p>Orders over Rs. 5,000</p>
 					</div>
 					<!-- End Single Service -->
 				</div>
@@ -70,7 +52,7 @@
 					<div class="single-service">
 						<i class="ti-reload"></i>
 						<h4>Free Return</h4>
-						<p>Within 30 days returns</p>
+						<p>Within 7 days returns</p>
 					</div>
 					<!-- End Single Service -->
 				</div>
@@ -78,7 +60,7 @@
 					<!-- Start Single Service -->
 					<div class="single-service">
 						<i class="ti-lock"></i>
-						<h4>Sucure Payment</h4>
+						<h4>Secure Payment</h4>
 						<p>100% secure payment</p>
 					</div>
 					<!-- End Single Service -->
@@ -87,7 +69,7 @@
 					<!-- Start Single Service -->
 					<div class="single-service">
 						<i class="ti-tag"></i>
-						<h4>Best Peice</h4>
+						<h4>Best Price</h4>
 						<p>Guaranteed price</p>
 					</div>
 					<!-- End Single Service -->

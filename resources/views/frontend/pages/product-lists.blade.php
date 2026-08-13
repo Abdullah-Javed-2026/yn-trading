@@ -102,7 +102,7 @@
                                                 @php
                                                     $org=($product->price-($product->price*$product->discount)/100);
                                                 @endphp
-                                                <p class="price"><del class="text-muted">PKR.{{number_format($product->price,0)}}</del>   PKR.{{number_format($org,0)}}  </p>                                                
+                                                <p class="price"><del class="text-muted">PKR {{number_format($product->price,0)}}</del>   PKR {{number_format($org,0)}}  </p>                                                
                                             </div>
                                         </div>
                                         <!-- End Single Post -->
@@ -192,9 +192,9 @@
 													<div class="list-content">
 														<div class="product-content">
 															<div class="product-price">
-																<span>PKR.{{number_format($after_discount,0)}}</span>
+																<span>PKR {{number_format($after_discount,0)}}</span>
 																@if($product->discount)
-																	<del>PKR.{{number_format($product->price,0)}}</del>
+																	<del>PKR {{number_format($product->price,0)}}</del>
 																@endif
 															</div>
 															<h3 class="title"><a href="{{route('product-detail',$product->slug)}}">{{$product->title}}</a></h3>
@@ -287,7 +287,7 @@
 												@php
 													$after_discount=($product->price-($product->price*$product->discount)/100);
 												@endphp
-												<h3><small><del class="text-muted">PKR.{{number_format($product->price,0)}}</del></small>    PKR.{{number_format($after_discount,0)}}  </h3>
+												<h3><small><del class="text-muted">PKR {{number_format($product->price,0)}}</del></small>    PKR {{number_format($after_discount,0)}}  </h3>
 												<div class="quickview-peragraph">
 													<p>{!! html_entity_decode($product->summary) !!}</p>
 												</div>

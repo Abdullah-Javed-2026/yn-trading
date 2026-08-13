@@ -207,21 +207,36 @@ class FrontendController extends Controller
     }
 
     public function productBrand(Request $request){
-        $products=Brand::getProductByBrand($request->slug);
-        $recent_products=Product::where('status','active')->orderBy('id','DESC')->limit(3)->get();
-        return view('frontend.pages.product-grids')->with('products',$products->products)->with('recent_products',$recent_products);
+        $brand = Brand::where('slug', $request->slug)->first();
+        $recent_products = Product::where('status','active')->orderBy('id','DESC')->limit(3)->get();
+        if(!$brand){
+            $products = Product::where('id', 0)->paginate(9);
+        } else {
+            $products = Product::where('status', 'active')->where('brand_id', $brand->id)->orderBy('id', 'DESC')->paginate(9);
+        }
+        return view('frontend.pages.product-grids')->with('products', $products)->with('recent_products', $recent_products);
 
     }
     public function productCat(Request $request){
-        $products=Category::getProductByCat($request->slug);
-        $recent_products=Product::where('status','active')->orderBy('id','DESC')->limit(3)->get();
-        return view('frontend.pages.product-grids')->with('products',$products->products)->with('recent_products',$recent_products);
+        $cat = Category::where('slug', $request->slug)->first();
+        $recent_products = Product::where('status','active')->orderBy('id','DESC')->limit(3)->get();
+        if(!$cat){
+            $products = Product::where('id', 0)->paginate(9);
+        } else {
+            $products = Product::where('status', 'active')->where('cat_id', $cat->id)->orderBy('id', 'DESC')->paginate(9);
+        }
+        return view('frontend.pages.product-grids')->with('products', $products)->with('recent_products', $recent_products);
 
     }
     public function productSubCat(Request $request){
-        $products=Category::getProductBySubCat($request->sub_slug);
-        $recent_products=Product::where('status','active')->orderBy('id','DESC')->limit(3)->get();
-        return view('frontend.pages.product-grids')->with('products',$products->sub_products)->with('recent_products',$recent_products);
+        $subCat = Category::where('slug', $request->sub_slug)->first();
+        $recent_products = Product::where('status','active')->orderBy('id','DESC')->limit(3)->get();
+        if(!$subCat){
+            $products = Product::where('id', 0)->paginate(9);
+        } else {
+            $products = Product::where('status', 'active')->where('child_cat_id', $subCat->id)->orderBy('id', 'DESC')->paginate(9);
+        }
+        return view('frontend.pages.product-grids')->with('products', $products)->with('recent_products', $recent_products);
 
     }
 

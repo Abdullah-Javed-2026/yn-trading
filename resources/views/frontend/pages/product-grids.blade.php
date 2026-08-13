@@ -6,14 +6,14 @@
     <!-- Product Style -->
     <form action="{{route('shop.filter')}}" method="POST">
         @csrf
-        <section class="product-area shop-sidebar shop section">
+        <section class="product-area shop-sidebar shop section" style="padding-top: 10px !important;">
             <div class="container-fluid px-4">
                 <div class="row">
                     <div class="col-12">
-                        <div class="row mb-3">
+                        <div class="row mb-0">
                             <div class="col-12">
                                 <!-- Shop Top -->
-                                <div class="shop-top p-3 mb-4" style="background: #ffffff; border: 1px solid #eaeaeb; border-radius: 6px;">
+                                <div class="shop-top mb-1" style="background: #ffffff; border: 1px solid #eaeaeb; border-radius: 6px;">
                                     <div class="d-flex flex-wrap align-items-center justify-content-between">
                                         <!-- Left: Category & Brand Filters -->
                                         <div class="d-flex flex-wrap align-items-center">
@@ -107,9 +107,9 @@
                                                 @php
                                                     $after_discount=($product->price-($product->price*$product->discount)/100);
                                                 @endphp
-                                                <span>PKR.{{number_format($after_discount,0)}}</span>
+                                                <span>PKR {{number_format($after_discount,0)}}</span>
                                                 @if($product->discount)
-                                                    <del style="padding-left:4%;">PKR.{{number_format($product->price,0)}}</del>
+                                                    <del style="padding-left:4%;">PKR {{number_format($product->price,0)}}</del>
                                                 @endif
                                             </div>
                                         </div>
@@ -124,7 +124,9 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12 justify-content-center d-flex">
-                                {{$products->appends($_GET)->links()}}
+                                @if($products instanceof \Illuminate\Pagination\AbstractPaginator)
+                                    {{$products->appends($_GET)->links()}}
+                                @endif
                             </div>
                           </div>
 
@@ -202,7 +204,7 @@
                                             @php
                                                 $after_discount=($product->price-($product->price*$product->discount)/100);
                                             @endphp
-                                            <h3><small><del class="text-muted">PKR.{{number_format($product->price,0)}}</del></small>    PKR.{{number_format($after_discount,0)}}  </h3>
+                                            <h3><small><del class="text-muted">PKR {{number_format($product->price,0)}}</del></small>    PKR {{number_format($after_discount,0)}}  </h3>
                                             <div class="quickview-peragraph">
                                                 <p>{!! html_entity_decode($product->summary) !!}</p>
                                             </div>

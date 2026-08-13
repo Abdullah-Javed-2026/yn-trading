@@ -69,7 +69,7 @@
                                                 @php 
                                                     $after_discount=($product_detail->price-(($product_detail->price*$product_detail->discount)/100));
                                                 @endphp
-												<p class="price"><span class="discount">PKR.{{number_format($after_discount,0)}}</span>@if($product_detail->discount > 0)<s>PKR.{{number_format($product_detail->price,0)}}</s>@endif </p>
+												<p class="price"><span class="discount">PKR {{number_format($after_discount,0)}}</span>@if($product_detail->discount > 0)<s>PKR {{number_format($product_detail->price,0)}}</s>@endif </p>
 												<p class="description">{!!($product_detail->summary)!!}</p>
 											</div>
 											<!--/ End Description -->
@@ -344,9 +344,9 @@
                                             @php 
                                                 $after_discount=($data->price-(($data->discount*$data->price)/100));
                                             @endphp
-                                             <span>PKR.{{number_format($after_discount,0)}}</span>
+                                             <span>PKR {{number_format($after_discount,0)}}</span>
                                              @if($data->discount > 0)
-                                                 <span class="old"><del>PKR.{{number_format($data->price,0)}}</del></span>
+                                                 <span class="old"><del>PKR {{number_format($data->price,0)}}</del></span>
                                              @endif
                                         </div>
                                       

@@ -69,6 +69,7 @@
     .shop-top {
         position: relative !important;
         z-index: 1000 !important;
+        padding: 8px 15px !important;
     }
     .nice-select {
         position: relative !important;
