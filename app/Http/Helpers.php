@@ -82,13 +82,17 @@ class Helper{
     }
     // Cart Count
     public static function cartCount($user_id=''){
-       
         if(Auth::check()){
             if($user_id=="") $user_id=auth()->user()->id;
             return Cart::where('user_id',$user_id)->where('order_id',null)->sum('quantity');
         }
         else{
-            return 0;
+            $guest_cart = session()->get('guest_cart', []);
+            $count = 0;
+            foreach($guest_cart as $item) {
+                $count += isset($item['quantity']) ? (int)$item['quantity'] : 1;
+            }
+            return $count;
         }
     }
     // relationship cart with product
@@ -102,18 +106,39 @@ class Helper{
             return Cart::with('product')->where('user_id',$user_id)->where('order_id',null)->get();
         }
         else{
-            return 0;
+            $guest_cart = session()->get('guest_cart', []);
+            $cart_objects = [];
+            foreach($guest_cart as $item) {
+                $product = is_object($item['product']) ? $item['product'] : \App\Models\Product::find($item['product_id']);
+                if ($product) {
+                    $obj = (object)[
+                        'id' => $item['id'] ?? $item['product_id'],
+                        'product_id' => $item['product_id'],
+                        'product' => $product,
+                        'quantity' => $item['quantity'],
+                        'price' => $item['price'],
+                        'amount' => $item['amount'],
+                        'summary' => $product->summary ?? ''
+                    ];
+                    $cart_objects[] = $obj;
+                }
+            }
+            return collect($cart_objects);
         }
     }
     // Total amount cart
     public static function totalCartPrice($user_id=''){
         if(Auth::check()){
             if($user_id=="") $user_id=auth()->user()->id;
-            // return Cart::where('user_id',$user_id)->where('order_id',null)->sum('amount');
-            return Cart::where('user_id',$user_id)->where('order_id',null)->sum('price');
+            return Cart::where('user_id',$user_id)->where('order_id',null)->sum('amount');
         }
         else{
-            return 0;
+            $guest_cart = session()->get('guest_cart', []);
+            $total = 0;
+            foreach($guest_cart as $item) {
+                $total += isset($item['amount']) ? (float)$item['amount'] : 0;
+            }
+            return $total;
         }
     }
     // Wishlist Count

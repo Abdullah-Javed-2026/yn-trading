@@ -3,23 +3,6 @@
 @section('title','Checkout page')
 
 @section('main-content')
-
-    <!-- Breadcrumbs -->
-    <div class="breadcrumbs">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="bread-inner">
-                        <ul class="bread-list">
-                            <li><a href="{{route('home')}}">Home<i class="ti-arrow-right"></i></a></li>
-                            <li class="active"><a href="javascript:void(0)">Checkout</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End Breadcrumbs -->
             
     <!-- Start Checkout -->
     <section class="shop checkout section">
@@ -364,10 +347,10 @@
                                         <ul>
 										    <li class="order_subtotal" data-price="{{Helper::totalCartPrice()}}">Cart Subtotal<span>PKR {{number_format(Helper::totalCartPrice(),0)}}</span></li>
                                             <li class="shipping">
-                                                Shipping Cost
+                                                Shipping Method
                                                 @if(count(Helper::shipping())>0 && Helper::cartCount()>0)
                                                     <select name="shipping" class="nice-select" required>
-                                                        <option value="">Select your address</option>
+                                                        <option value="">Select Shipping Method</option>
                                                         @foreach(Helper::shipping() as $shipping)
                                                         <option value="{{$shipping->id}}" class="shippingOption" data-price="{{$shipping->price}}">{{$shipping->type}}: PKR {{number_format($shipping->price,0)}}</option>
                                                         @endforeach

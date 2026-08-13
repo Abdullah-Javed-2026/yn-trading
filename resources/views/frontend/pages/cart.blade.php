@@ -25,14 +25,20 @@
 									@foreach(Helper::getAllProductFromCart() as $key=>$cart)
 										<tr>
 											@php
-											$photo=explode(',',$cart->product['photo']);
+												$pro = is_object($cart->product) ? $cart->product : (object)$cart->product;
+												$photo = explode(',', $pro->photo ?? '');
+												$title = $pro->title ?? '';
+												$slug = $pro->slug ?? '';
+												$price = is_object($cart) ? $cart->price : $cart['price'];
+												$amount = is_object($cart) ? $cart->amount : $cart['amount'];
+												$summary = is_object($cart) ? ($cart->summary ?? '') : ($cart['summary'] ?? '');
 											@endphp
-											<td class="image" data-title="No"><img src="{{$photo[0]}}" alt="{{$photo[0]}}"></td>
+											<td class="image" data-title="No"><img src="{{$photo[0]}}" alt="{{$title}}"></td>
 											<td class="product-des" data-title="Description">
-												<p class="product-name"><a href="{{route('product-detail',$cart->product['slug'])}}" target="_blank">{{$cart->product['title']}}</a></p>
-												<p class="product-des">{!!($cart['summary']) !!}</p>
+												<p class="product-name"><a href="{{route('product-detail',$slug)}}" target="_blank">{{$title}}</a></p>
+												<p class="product-des">{!! $summary !!}</p>
 											</td>
-											<td class="price" data-title="Price"><span>PKR {{number_format($cart['amount'],0)}}</span></td>
+											<td class="price" data-title="Price"><span>PKR {{number_format($price,0)}}</span></td>
 											<td class="qty" data-title="Qty"><!-- Input Order -->
 												<div class="input-group">
 													<div class="button minus">
@@ -50,7 +56,7 @@
 												</div>
 												<!--/ End Input Order -->
 											</td>
-											<td class="total-amount cart_single_price" data-title="Total"><span class="money">PKR {{number_format($cart['price'],0)}}</span></td>
+											<td class="total-amount cart_single_price" data-title="Total"><span class="money">PKR {{number_format($amount,0)}}</span></td>
 
 											<td class="action" data-title="Remove"><a href="{{route('cart-delete',$cart->id)}}"><i class="ti-trash remove-icon"></i></a></td>
 										</tr>

@@ -65,34 +65,36 @@
                             <span class="total-count">{{Helper::cartCount()}}</span>
                         </a>
                         <!-- Shopping Cart Item Dropdown -->
-                        @auth
-                            <div class="shopping-item">
-                                <div class="dropdown-cart-header">
-                                    <span>{{count(Helper::getAllProductFromCart())}} Items</span>
-                                    <a href="{{route('cart')}}">View Cart</a>
-                                </div>
-                                <ul class="shopping-list">
-                                    @foreach(Helper::getAllProductFromCart() as $data)
-                                        @php
-                                            $photo=explode(',',$data->product['photo']);
-                                        @endphp
-                                        <li>
-                                            <a href="{{route('cart-delete',$data->id)}}" class="remove" title="Remove this item"><i class="fa fa-remove"></i></a>
-                                            <a class="cart-img" href="#"><img src="{{$photo[0]}}" alt="{{$photo[0]}}"></a>
-                                            <h4><a href="{{route('product-detail',$data->product['slug'])}}" target="_blank">{{$data->product['title']}}</a></h4>
-                                            <p class="quantity">{{$data->quantity}} x - <span class="amount">Rs. {{number_format($data->price,0)}}</span></p>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                                <div class="bottom">
-                                    <div class="total">
-                                        <span>Total</span>
-                                        <span class="total-amount">Rs. {{number_format(Helper::totalCartPrice(),0)}}</span>
-                                    </div>
-                                    <a href="{{route('checkout')}}" class="btn animate">Checkout</a>
-                                </div>
+                        <div class="shopping-item">
+                            <div class="dropdown-cart-header">
+                                <span>{{count(Helper::getAllProductFromCart())}} Items</span>
+                                <a href="{{route('cart')}}">View Cart</a>
                             </div>
-                        @endauth
+                            <ul class="shopping-list">
+                                @foreach(Helper::getAllProductFromCart() as $data)
+                                    @php
+                                        $pro = is_object($data->product) ? $data->product : (object)$data->product;
+                                        $photo = explode(',', $pro->photo ?? '');
+                                        $title = $pro->title ?? '';
+                                        $slug = $pro->slug ?? '';
+                                        $price = is_object($data) ? $data->price : $data['price'];
+                                    @endphp
+                                    <li>
+                                        <a href="{{route('cart-delete',$data->id)}}" class="remove" title="Remove this item"><i class="fa fa-remove"></i></a>
+                                        <a class="cart-img" href="{{route('product-detail',$slug)}}"><img src="{{$photo[0]}}" alt="{{$title}}"></a>
+                                        <h4><a href="{{route('product-detail',$slug)}}" target="_blank">{{$title}}</a></h4>
+                                        <p class="quantity">{{$data->quantity}} x - <span class="amount">PKR {{number_format($price,0)}}</span></p>
+                                    </li>
+                                @endforeach
+                            </ul>
+                            <div class="bottom">
+                                <div class="total">
+                                    <span>Total</span>
+                                    <span class="total-amount">PKR {{number_format(Helper::totalCartPrice(),0)}}</span>
+                                </div>
+                                <a href="{{route('checkout')}}" class="btn animate">Checkout</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
