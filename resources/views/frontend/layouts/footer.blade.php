@@ -16,7 +16,7 @@
 									<img src="@foreach($settings as $data) {{$data->logo}} @endforeach" alt="logo" style="max-height: 50px;">
 								</a>
 							</div>
-							<p class="text">Welcome to Sanaulla Store, Pakistan's premier online fashion store. Discover the finest collection of designer unstitched suits, pret wear, luxury lawn, and traditional Pakistani apparel.</p>
+							<p class="text">Welcome to YN Trading, Pakistan's premier online fashion store. Discover the finest collection of designer unstitched suits, pret wear, luxury lawn, and traditional Pakistani apparel.</p>
 							<p class="call">Got Question? Call us 24/7<span><a href="tel:+923001234567">+92 300 1234567</a></span></p>
 						</div>
 						<!-- End Single Widget -->
@@ -76,7 +76,7 @@
 					<div class="row">
 						<div class="col-lg-6 col-12">
 							<div class="left">
-								<p>© {{date('Y')}} Sanaulla Store - All Rights Reserved.</p>
+								<p>© {{date('Y')}} YN Trading - All Rights Reserved.</p>
 							</div>
 						</div>
 						<div class="col-lg-6 col-12">
