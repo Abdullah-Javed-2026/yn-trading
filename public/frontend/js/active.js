@@ -92,93 +92,91 @@ window.onload = () => {
 		/*=======================
 		  Home Slider JS
 		=========================*/ 
-		$('.home-slider').owlCarousel({
-			items:1,
-			autoplay:true,
-			autoplayTimeout:5000,
-			smartSpeed: 400,
-			animateIn: 'fadeIn',
-			animateOut: 'fadeOut',
-			autoplayHoverPause:true,
-			loop:true,
-			nav:true,
-			merge:true,
-			dots:false,
-			navText: ['<i class="ti-angle-left"></i>', '<i class="ti-angle-right"></i>'],
-			responsive:{
-				0: {
-					items:1,
-				},
-				300: {
-					items:1,
-				},
-				480: {
-					items:2,
-				},
-				768: {
-					items:3,
-				},
-				1170: {
-					items:4,
-				},
-			}
-		});
+		if ($('.home-slider').length) {
+			$('.home-slider').owlCarousel({
+				items:1,
+				autoplay:true,
+				autoplayTimeout:5000,
+				smartSpeed: 400,
+				animateIn: 'fadeIn',
+				animateOut: 'fadeOut',
+				autoplayHoverPause:true,
+				loop:true,
+				nav:true,
+				merge:true,
+				dots:false,
+				navText: ['<i class="ti-angle-left"></i>', '<i class="ti-angle-right"></i>'],
+				responsive:{
+					0: { items:1 },
+					300: { items:1 },
+					480: { items:2 },
+					768: { items:3 },
+					1170: { items:4 }
+				}
+			});
+		}
 		
 		/*=======================
 		  Popular Slider JS
 		=========================*/ 
-		$('.popular-slider').owlCarousel({
-			items: 4,
-			loop: true,
-			margin: 20,
-			autoplay: true,
-			slideTransition: 'linear',
-			autoplayTimeout: 0,
-			autoplaySpeed: 4000,
-			smartSpeed: 4000,
-			autoplayHoverPause: true,
-			nav: true,
-			dots: false,
-			navText: ['<i class="ti-angle-left"></i>', '<i class="ti-angle-right"></i>'],
-			responsive: {
-				0: { items: 1 },
-				480: { items: 2 },
-				768: { items: 3 },
-				1170: { items: 4 }
-			}
-		});
+		if ($('.popular-slider').length) {
+			$('.popular-slider').owlCarousel({
+				items: 4,
+				loop: true,
+				margin: 20,
+				autoplay: true,
+				slideTransition: 'linear',
+				autoplayTimeout: 0,
+				autoplaySpeed: 4000,
+				smartSpeed: 4000,
+				autoplayHoverPause: true,
+				nav: true,
+				dots: false,
+				navText: ['<i class="ti-angle-left"></i>', '<i class="ti-angle-right"></i>'],
+				responsive: {
+					0: { items: 1 },
+					480: { items: 2 },
+					768: { items: 3 },
+					1170: { items: 4 }
+				}
+			});
+		}
 		
 		/*===========================
 		  Quick View Slider JS
 		=============================*/ 
-		$('.quickview-slider-active').owlCarousel({
-			items:1,
-			autoplay:true,
-			autoplayTimeout:5000,
-			smartSpeed: 400,
-			autoplayHoverPause:true,
-			nav:true,
-			loop:true,
-			merge:true,
-			dots:false,
-			navText: ['<i class=" ti-arrow-left"></i>', '<i class=" ti-arrow-right"></i>'],
-		});
+		if ($('.quickview-slider-active').length && $('.quickview-slider-active').children().length > 0) {
+			$('.quickview-slider-active').owlCarousel({
+				items:1,
+				autoplay:true,
+				autoplayTimeout:5000,
+				smartSpeed: 400,
+				autoplayHoverPause:true,
+				nav:true,
+				loop:true,
+				merge:true,
+				dots:false,
+				navText: ['<i class=" ti-arrow-left"></i>', '<i class=" ti-arrow-right"></i>'],
+			});
+		}
 		
 		/*===========================
 		  Home Slider 4 JS
 		=============================*/ 
-		$('.home-slider-4').owlCarousel({
-			items:1,
-			autoplay:true,
-			autoplayTimeout:5000,
-			smartSpeed: 400,
-			autoplayHoverPause:true,
-			nav:true,
-			loop:true,
-			merge:true,
-			dots:false,
-			navText: ['<i class=" ti-arrow-left"></i>', '<i class=" ti-arrow-right"></i>'],
-		});
+		if ($('.home-slider-4').length) {
+			$('.home-slider-4').owlCarousel({
+				items:1,
+				autoplay:true,
+				autoplayTimeout:5000,
+				smartSpeed: 400,
+				autoplayHoverPause:true,
+				nav:true,
+				loop:true,
+				merge:true,
+				dots:false,
+				navText: ['<i class=" ti-arrow-left"></i>', '<i class=" ti-arrow-right"></i>'],
+			});
+		}
 		
 		/*====================================
 		14. CountDown
@@ -312,11 +310,7 @@ window.onload = () => {
 	/*=====================================
 	  Preloader JS
 	======================================*/ 	
-	//After 2s preloader is fadeOut
-	$('.preloader').delay(2000).fadeOut('slow');
-	setTimeout(function() {
-	//After 2s, the no-scroll class of the body will be removed
+	$('.preloader').fadeOut('fast');
 	$('body').removeClass('no-scroll');
-	}, 2000); //Here you can change preloader time
 	 
 })(jQuery);

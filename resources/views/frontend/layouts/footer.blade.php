@@ -148,8 +148,6 @@
 	<script src="{{asset('frontend/js/popper.min.js')}}"></script>
 	<!-- Bootstrap JS -->
 	<script src="{{asset('frontend/js/bootstrap.min.js')}}"></script>
-	<!-- Color JS -->
-	<script src="{{asset('frontend/js/colors.js')}}"></script>
 	<!-- Slicknav JS -->
 	<script src="{{asset('frontend/js/slicknav.min.js')}}"></script>
 	<!-- Owl Carousel JS -->
@@ -176,7 +174,28 @@
 	<!-- Active JS -->
 	<script src="{{asset('frontend/js/active.js')}}"></script>
 
-	
+	<!-- Preloader Safety Fallback -->
+	<script>
+		(function() {
+			function removePreloader() {
+				var p = document.querySelector('.preloader');
+				if (p) {
+					p.style.transition = 'opacity 0.3s ease';
+					p.style.opacity = '0';
+					p.style.pointerEvents = 'none';
+					setTimeout(function() { p.style.display = 'none'; }, 300);
+				}
+				document.body.classList.remove('no-scroll');
+			}
+			if (document.readyState === 'complete') {
+				setTimeout(removePreloader, 300);
+			} else {
+				window.addEventListener('load', function() { setTimeout(removePreloader, 300); });
+				setTimeout(removePreloader, 1000);
+			}
+		})();
+	</script>
+
 	@stack('scripts')
 	<script>
 		setTimeout(function(){
