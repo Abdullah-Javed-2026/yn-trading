@@ -2,10 +2,10 @@
 
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{route('admin')}}">
-      <div class="sidebar-brand-icon rotate-n-15">
-        <i class="fas fa-cart-arrow-down"></i>
+      <div class="sidebar-brand-icon">
+        <i class="fas fa-store"></i>
       </div>
-      <div class="sidebar-brand-text mx-3">Admin</div>
+      <div class="sidebar-brand-text mx-2">YN TRADING</div>
     </a>
 
     <!-- Divider -->
