@@ -183,14 +183,16 @@
 
     /* Header Alignment & Logo Rules */
     .navbar-header-row {
-        padding: 12px 20px !important;
-        min-height: 58px;
+        padding: 10px 24px !important;
+        min-height: 72px;
     }
     .header-logo-img {
-        max-height: 42px;
+        max-height: 65px;
+        height: auto;
         width: auto;
         object-fit: contain;
         display: block;
+        transition: transform 0.2s ease;
     }
     .hamburger-menu-btn, .action-icon-link, .action-icon-btn {
         display: inline-flex !important;
@@ -609,11 +611,11 @@
             padding: 5px 0 !important;
         }
         .navbar-header-row {
-            padding: 8px 10px !important;
-            min-height: 50px !important;
+            padding: 8px 14px !important;
+            min-height: 56px !important;
         }
         .header-logo-img {
-            max-height: 32px !important;
+            max-height: 48px !important;
         }
         .hamburger-menu-btn {
             font-size: 22px !important;
