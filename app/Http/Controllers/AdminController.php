@@ -48,7 +48,8 @@ class AdminController extends Controller
 
     public function settings(){
         $data=Settings::first();
-        return view('backend.setting')->with('data',$data);
+        $products=\App\Models\Product::where('status','active')->orderBy('title','asc')->get();
+        return view('backend.setting')->with('data',$data)->with('products',$products);
     }
 
     public function settingsUpdate(Request $request){
@@ -64,6 +65,33 @@ class AdminController extends Controller
             'announcement'=>'nullable|string',
         ]);
         $data=$request->all();
+
+        // Process Lookbook Settings
+        if($request->has('lookbook_title') || $request->has('lookbook_image')){
+            $items = [];
+            for($i = 1; $i <= 3; $i++){
+                $items[] = [
+                    'id' => $i,
+                    'product_id' => $request->input("lookbook_item{$i}_product_id"),
+                    'tag' => $request->input("lookbook_item{$i}_tag") ?? ("ITEM 0{$i} • APPAREL"),
+                    'top' => $request->input("lookbook_item{$i}_top") ?? ($i == 1 ? '22%' : ($i == 2 ? '50%' : '80%')),
+                    'left' => $request->input("lookbook_item{$i}_left") ?? ($i == 1 ? '44%' : ($i == 2 ? '60%' : '42%')),
+                    'title' => $request->input("lookbook_item{$i}_title"),
+                    'category' => $request->input("lookbook_item{$i}_category"),
+                    'price' => $request->input("lookbook_item{$i}_price"),
+                    'photo' => $request->input("lookbook_item{$i}_photo"),
+                ];
+            }
+            $lookbookData = [
+                'title' => $request->input('lookbook_title') ?? 'Popular Choices — Shop The Look',
+                'subtitle' => $request->input('lookbook_subtitle') ?? 'INTERACTIVE LOOKBOOK',
+                'description' => $request->input('lookbook_description') ?? 'Hover or tap on the glowing hotspots (+) to discover and shop the curated designer pieces.',
+                'image' => $request->input('lookbook_image') ?? 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=1200&q=85',
+                'items' => $items,
+            ];
+            $data['lookbook_data'] = json_encode($lookbookData);
+        }
+
         $settings=Settings::first();
         if(!$settings){
             $settings = new Settings();

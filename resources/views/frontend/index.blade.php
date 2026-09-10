@@ -437,197 +437,226 @@
 </section>
 <!-- End Editorial Promotional Banners -->
 
-<!-- 6. POPULAR CHOICES (Curated Luxury Spotlight & High-Demand Grid) -->
-<section class="popular-choices-section py-5">
+<!-- 6. POPULAR CHOICES: INTERACTIVE HOTSPOT LOOKBOOK (Shop The Look) -->
+@php
+    $settingsObj = DB::table('settings')->first();
+    $lookbookData = !empty($settingsObj->lookbook_data) ? json_decode($settingsObj->lookbook_data, true) : null;
+    
+    $lbTitle = $lookbookData['title'] ?? 'Popular Choices — Shop The Look';
+    $lbSubtitle = $lookbookData['subtitle'] ?? 'INTERACTIVE LOOKBOOK';
+    $lbDesc = $lookbookData['description'] ?? 'Hover or tap on the glowing hotspots (+) to discover and shop the curated designer pieces.';
+    $lbImage = !empty($lookbookData['image']) ? $lookbookData['image'] : 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=1200&q=85';
+
+    $defaultSpots = [
+        [
+            'id' => 1,
+            'top' => '22%',
+            'left' => '44%',
+            'title' => 'Pure Silk Embroidered Dupatta',
+            'category' => 'Festive Silk',
+            'price' => 3850,
+            'old_price' => 4500,
+            'image' => 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=600&q=80',
+            'slug' => null,
+            'prod_id' => null,
+            'tag' => 'ITEM 01 • SCARF / DUPATTA',
+        ],
+        [
+            'id' => 2,
+            'top' => '50%',
+            'left' => '60%',
+            'title' => 'Hand-Crafted Designer Pret Kurti',
+            'category' => 'Luxury Pret',
+            'price' => 6950,
+            'old_price' => 8200,
+            'image' => 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=600&q=80',
+            'slug' => null,
+            'prod_id' => null,
+            'tag' => 'ITEM 02 • DESIGNER SHIRT',
+        ],
+        [
+            'id' => 3,
+            'top' => '80%',
+            'left' => '42%',
+            'title' => 'Raw Silk Tailored Straight Trousers',
+            'category' => 'Bottoms & Pants',
+            'price' => 2950,
+            'old_price' => 3500,
+            'image' => 'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=600&q=80',
+            'slug' => null,
+            'prod_id' => null,
+            'tag' => 'ITEM 03 • RAW SILK BOTTOM',
+        ],
+    ];
+
+    $hotspots = [];
+    for ($i = 1; $i <= 3; $i++) {
+        $saved = $lookbookData['items'][$i - 1] ?? null;
+        $fallback = $defaultSpots[$i - 1];
+
+        $prodId = $saved['product_id'] ?? null;
+        $prod = $prodId ? DB::table('products')->where('id', $prodId)->where('status', 'active')->first() : null;
+
+        $top = !empty($saved['top']) ? $saved['top'] : $fallback['top'];
+        if (is_numeric($top)) $top = $top . '%';
+        $left = !empty($saved['left']) ? $saved['left'] : $fallback['left'];
+        if (is_numeric($left)) $left = $left . '%';
+
+        $tag = !empty($saved['tag']) ? $saved['tag'] : $fallback['tag'];
+        $cat = !empty($saved['category']) ? $saved['category'] : ($prod ? (DB::table('categories')->where('id', $prod->cat_id)->value('title') ?? 'Luxury Apparel') : $fallback['category']);
+        $title = !empty($saved['title']) ? $saved['title'] : ($prod ? $prod->title : $fallback['title']);
+
+        if ($prod) {
+            $price = $prod->price - ($prod->price * $prod->discount) / 100;
+            $oldPrice = ($prod->discount > 0) ? $prod->price : 0;
+            $photos = explode(',', $prod->photo);
+            $photo = !empty($saved['photo']) ? $saved['photo'] : $photos[0];
+            $slug = $prod->slug;
+            $pId = $prod->id;
+        } else {
+            $price = !empty($saved['price']) ? $saved['price'] : $fallback['price'];
+            $oldPrice = $fallback['old_price'];
+            $photo = !empty($saved['photo']) ? $saved['photo'] : $fallback['image'];
+            $slug = null;
+            $pId = null;
+        }
+
+        $hotspots[] = [
+            'id' => $i,
+            'top' => $top,
+            'left' => $left,
+            'title' => $title,
+            'category' => $cat,
+            'price' => $price,
+            'old_price' => $oldPrice,
+            'image' => $photo,
+            'slug' => $slug,
+            'prod_id' => $pId,
+            'tag' => $tag,
+        ];
+    }
+@endphp
+<section class="lookbook-section py-5">
     <div class="container-fluid px-lg-5 px-3">
         
-        <!-- Header with Subtitle & Interactive Filter Pills -->
-        <div class="popular-choices-header">
-            <div class="luxury-section-title text-left mb-0">
-                <span class="subtitle-tag" style="font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #111111; display: inline-block; margin-bottom: 6px;">
-                    <i class="fa fa-fire text-danger mr-1"></i> MOST LOVED & HIGHLY RATED
-                </span>
-                <h2 style="font-size: 28px; font-weight: 700; color: #111111; text-transform: uppercase; margin: 0; letter-spacing: -0.5px;">
-                    Popular Choices
-                </h2>
-                <p style="color: #666666; font-size: 14px; margin-top: 4px; margin-bottom: 0;">
-                    Curated client favorites, festive bestsellers, and timeless luxury silhouettes
-                </p>
-            </div>
-            
-            <!-- Filter Pills -->
-            <div class="popular-filter-pills">
-                <button type="button" class="pop-pill active" data-filter="all">All Popular</button>
-                <button type="button" class="pop-pill" data-filter="hot">🔥 Bestsellers</button>
-                <button type="button" class="pop-pill" data-filter="sale">⚡ On Sale</button>
-                <button type="button" class="pop-pill" data-filter="featured">👑 Exclusive Pret</button>
-            </div>
+        <!-- Clean Luxury Header -->
+        <div class="luxury-section-title text-center mb-4">
+            <span class="subtitle-tag" style="font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #111111; display: inline-block; margin-bottom: 6px;">
+                <i class="fa fa-crosshairs text-dark mr-1"></i> {{$lbSubtitle}}
+            </span>
+            <h2 style="font-size: 30px; font-weight: 700; color: #111111; text-transform: uppercase; margin: 0; letter-spacing: -0.5px;">
+                {{$lbTitle}}
+            </h2>
+            <p style="color: #666666; font-size: 14px; margin-top: 6px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                {{$lbDesc}}
+            </p>
         </div>
 
-        @php
-            $popularQuery = DB::table('products')
-                ->where('status', 'active')
-                ->where(function($q) {
-                    $q->where('condition', 'hot')
-                      ->orWhere('discount', '>', 0)
-                      ->orWhere('is_featured', 1);
-                })
-                ->orderBy('id', 'desc')
-                ->take(5)
-                ->get();
-
-            if(!$popularQuery || count($popularQuery) < 5) {
-                $popularQuery = DB::table('products')->where('status', 'active')->orderBy('id', 'desc')->take(5)->get();
-            }
-
-            $spotlightProduct = $popularQuery->first();
-            $gridProducts = $popularQuery->slice(1, 4);
-            if($gridProducts->isEmpty()) {
-                $gridProducts = $popularQuery;
-            }
-        @endphp
-
-        <div class="row mt-4 align-items-stretch">
+        <div class="row align-items-center">
             
-            <!-- Left: High-Fashion Spotlight Editorial Banner (col-lg-5 col-12) -->
-            @if($spotlightProduct)
-                @php
-                    $spotPhotos = explode(',', $spotlightProduct->photo);
-                    $spotCat = DB::table('categories')->where('id', $spotlightProduct->cat_id)->first();
-                    $spotDiscountPrice = $spotlightProduct->price - ($spotlightProduct->price * $spotlightProduct->discount) / 100;
-                @endphp
-                <div class="col-lg-5 col-12 mb-4 mb-lg-0">
-                    <div class="spotlight-showcase-card">
-                        <div class="spotlight-img-wrap">
-                            <img src="{{$spotPhotos[0]}}" alt="{{$spotlightProduct->title}}">
-                            <div class="spotlight-badge-strip">
-                                <span class="spotlight-badge-crown"><i class="fa fa-star"></i> SPOTLIGHT OF THE WEEK</span>
-                                <span class="spotlight-badge-hot"><i class="fa fa-bolt"></i> 180+ Sold</span>
-                            </div>
-                        </div>
-
-                        <div class="spotlight-content-overlay">
-                            @if($spotCat)
-                                <span class="spotlight-category">{{$spotCat->title}}</span>
-                            @endif
-                            <h3 class="spotlight-title">{{$spotlightProduct->title}}</h3>
-                            
-                            <div class="spotlight-pricing-row">
-                                <span class="spotlight-current-price">PKR {{number_format($spotDiscountPrice, 0)}}</span>
-                                @if($spotlightProduct->discount > 0)
-                                    <del class="spotlight-old-price">PKR {{number_format($spotlightProduct->price, 0)}}</del>
-                                    <span class="spotlight-save-pill">SAVE {{number_format($spotlightProduct->discount, 0)}}%</span>
-                                @endif
-                            </div>
-
-                            <div class="spotlight-perks-row">
-                                <span><i class="ti-check"></i> 100% Pure Luxury Fabric</span>
-                                <span><i class="ti-truck"></i> Express 2-3 Day Delivery</span>
-                            </div>
-
-                            <div class="spotlight-btn-group">
-                                <a href="{{route('product-detail', $spotlightProduct->slug)}}" class="spotlight-cta-btn">
-                                    <span>Shop The Spotlight</span>
-                                    <i class="ti-arrow-right"></i>
-                                </a>
-                                <button type="button" class="spotlight-quickview-btn" data-toggle="modal" data-target="#{{$spotlightProduct->id}}" title="Quick View">
-                                    <i class="ti-eye"></i> Quick View
-                                </button>
-                            </div>
-                        </div>
+            <!-- Left: Interactive Model Banner with Hotspots (col-lg-7 col-12) -->
+            <div class="col-lg-7 col-12 mb-4 mb-lg-0">
+                <div class="lookbook-stage">
+                    <img src="{{$lbImage}}" alt="Shop The Look Model" class="lookbook-hero-img">
+                    
+                    <!-- Floating Hint Badge -->
+                    <div class="lookbook-hint-badge">
+                        <i class="fa fa-hand-pointer-o mr-1"></i> Tap pins to view items
                     </div>
-                </div>
-            @endif
 
-            <!-- Right: 2x2 Popular Choices Product Grid (col-lg-7 col-12) -->
-            <div class="col-lg-7 col-12">
-                <div class="row">
-                    @foreach($gridProducts as $item)
-                        @php
-                            $itemPhotos = explode(',', $item->photo);
-                            $itemCat = DB::table('categories')->where('id', $item->cat_id)->first();
-                            $itemDiscountPrice = $item->price - ($item->price * $item->discount) / 100;
-                            $filterCategory = ($item->condition == 'hot') ? 'hot' : (($item->discount > 0) ? 'sale' : 'featured');
-                        @endphp
-                        <div class="col-sm-6 col-6 mb-3 px-2 popular-grid-col" data-cat="{{$filterCategory}}">
-                            <div class="single-product fashion-card popular-luxury-card">
-                                <div class="product-img">
-                                    <a href="{{route('product-detail', $item->slug)}}">
-                                        <img class="default-img" src="{{$itemPhotos[0]}}" alt="{{$item->title}}">
-                                        <img class="hover-img" src="{{$itemPhotos[1] ?? $itemPhotos[0]}}" alt="{{$item->title}}">
-                                    </a>
+                    <!-- Hotspot Pins -->
+                    @foreach($hotspots as $spot)
+                        <div class="lookbook-pin-wrap" style="top: {{$spot['top']}}; left: {{$spot['left']}};" data-spot-id="{{$spot['id']}}">
+                            
+                            <!-- Pulsing Pin Button -->
+                            <button type="button" class="lookbook-pin-btn" aria-label="View {{$spot['title']}}">
+                                <span class="pin-ripple"></span>
+                                <span class="pin-core"><i class="ti-plus"></i></span>
+                            </button>
 
-                                    <!-- Top Badges -->
-                                    <div class="card-badge-wrap">
-                                        @if($item->discount > 0)
-                                            <span class="badge-discount">-{{number_format($item->discount, 0)}}%</span>
-                                        @elseif($item->condition == 'hot')
-                                            <span class="badge-new" style="background: #111111;">★ BESTSELLER</span>
-                                        @else
-                                            <span class="badge-new">POPULAR</span>
-                                        @endif
-                                    </div>
-
-                                    <!-- Wishlist Button -->
-                                    <a title="Add to Wishlist" href="{{route('add-to-wishlist', $item->slug)}}" class="card-wishlist-btn" data-id="{{$item->id}}">
-                                        <i class="ti-heart"></i>
-                                    </a>
-
-                                    <!-- Quick View Button -->
-                                    <button type="button" class="card-quick-view-btn" data-toggle="modal" data-target="#{{$item->id}}">
-                                        <i class="ti-eye"></i> Quick View
-                                    </button>
-
-                                    <!-- Quick Add Bag -->
-                                    <a title="Add to Cart" href="{{route('add-to-cart', $item->slug)}}" class="card-quick-bag-btn">
-                                        <i class="ti-bag"></i>
-                                    </a>
-                                </div>
-
-                                <div class="product-content">
-                                    <div class="d-flex justify-content-between align-items-center mb-1">
-                                        <span class="product-category-tag mb-0">{{$itemCat->title ?? 'Luxury Pret'}}</span>
-                                        <div class="popular-rating-stars">
-                                            <i class="fa fa-star text-warning"></i>
-                                            <span class="small font-weight-bold text-dark ml-1">4.9</span>
+                            <!-- Floating Mini Popover Card -->
+                            <div class="lookbook-popover-card">
+                                <button type="button" class="popover-close-btn">&times;</button>
+                                <div class="popover-content-flex">
+                                    <img src="{{$spot['image']}}" alt="{{$spot['title']}}" class="popover-thumb">
+                                    <div class="popover-info">
+                                        <span class="popover-cat">{{$spot['category']}}</span>
+                                        <h5 class="popover-title">{{$spot['title']}}</h5>
+                                        <div class="popover-price">
+                                            <span class="popover-current">PKR {{number_format($spot['price'], 0)}}</span>
+                                            @if($spot['old_price'] > $spot['price'])
+                                                <del class="popover-old">PKR {{number_format($spot['old_price'], 0)}}</del>
+                                            @endif
                                         </div>
                                     </div>
-                                    <h3 class="product-title-text">
-                                        <a href="{{route('product-detail', $item->slug)}}">{{$item->title}}</a>
-                                    </h3>
-                                    <div class="price-box">
-                                        <span class="current-price">PKR {{number_format($itemDiscountPrice, 0)}}</span>
-                                        @if($item->discount > 0)
-                                            <del class="old-price">PKR {{number_format($item->price, 0)}}</del>
-                                        @endif
-                                    </div>
-                                    <div class="popular-sales-meter">
-                                        <span class="meter-text"><i class="fa fa-clock-o"></i> Fast Selling • In High Demand</span>
-                                    </div>
+                                </div>
+                                <div class="popover-actions mt-2">
+                                    @if(!empty($spot['prod_id']))
+                                        <button type="button" class="popover-quickview-btn" data-toggle="modal" data-target="#{{$spot['prod_id']}}">
+                                            <i class="ti-eye"></i> Quick View
+                                        </button>
+                                        <a href="{{route('product-detail', $spot['slug'])}}" class="popover-details-btn">
+                                            <span>Shop</span> <i class="ti-arrow-right"></i>
+                                        </a>
+                                    @else
+                                        <a href="{{route('product-grids')}}" class="popover-details-btn btn-block text-center">
+                                            <span>Explore Style</span> <i class="ti-arrow-right"></i>
+                                        </a>
+                                    @endif
                                 </div>
                             </div>
+
                         </div>
                     @endforeach
+
                 </div>
             </div>
 
-        </div>
-
-        <!-- VIP WhatsApp Concierge Strip -->
-        <div class="popular-vip-strip mt-4">
-            <div class="row align-items-center">
-                <div class="col-lg-8 col-md-7 col-12 text-center text-md-left mb-3 mb-md-0">
-                    <div class="d-flex align-items-center justify-content-center justify-content-md-start">
-                        <div class="vip-icon-circle mr-3">
-                            <i class="fa fa-whatsapp"></i>
-                        </div>
-                        <div>
-                            <h5 class="vip-strip-title mb-1">Looking for Custom Tailoring or Bridal Styling?</h5>
-                            <p class="vip-strip-sub mb-0">Connect directly with our senior fashion consultants on WhatsApp for bespoke sizing & order assistance.</p>
-                        </div>
+            <!-- Right: Curated Ensemble Matching Pieces (col-lg-5 col-12) -->
+            <div class="col-lg-5 col-12">
+                <div class="lookbook-sidebar-card">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h4 class="ensemble-title mb-0">The Complete Look</h4>
+                        <span class="badge badge-dark px-2 py-1 font-weight-normal" style="background: #111111; color: #ffffff; font-size: 11px;">3 PIECES</span>
                     </div>
-                </div>
-                <div class="col-lg-4 col-md-5 col-12 text-center text-md-right">
+                    <p class="ensemble-desc mb-3">
+                        Each piece is tailored with handpicked fabrics, contemporary cuts, and timeless Pakistani craftsmanship.
+                    </p>
+
+                    <!-- List of 3 items -->
+                    <div class="ensemble-items-list">
+                        @foreach($hotspots as $spot)
+                            <div class="ensemble-item-card" data-spot-id="{{$spot['id']}}">
+                                <div class="ensemble-item-thumb-wrap">
+                                    <img src="{{$spot['image']}}" alt="{{$spot['title']}}">
+                                    <span class="ensemble-spot-badge">{{$spot['id']}}</span>
+                                </div>
+                                <div class="ensemble-item-details">
+                                    <span class="ensemble-item-tag">{{$spot['tag']}}</span>
+                                    <h5 class="ensemble-item-name">{{$spot['title']}}</h5>
+                                    <div class="ensemble-item-price">
+                                        <span class="current">PKR {{number_format($spot['price'], 0)}}</span>
+                                        @if($spot['old_price'] > $spot['price'])
+                                            <del class="old">PKR {{number_format($spot['old_price'], 0)}}</del>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="ensemble-item-action">
+                                    @if(!empty($spot['prod_id']))
+                                        <button type="button" class="ensemble-quick-btn" data-toggle="modal" data-target="#{{$spot['prod_id']}}" title="Quick View">
+                                            <i class="ti-eye"></i>
+                                        </button>
+                                    @else
+                                        <a href="{{route('product-grids')}}" class="ensemble-quick-btn" title="Explore">
+                                            <i class="ti-arrow-right"></i>
+                                        </a>
+                                    @endif
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <!-- Bottom Action: WhatsApp Styling Consultation -->
                     @php
                         $settings = DB::table('settings')->get();
                         $rawWhatsapp = (count($settings) > 0 && !empty($settings[0]->whatsapp)) ? $settings[0]->whatsapp : ($settings[0]->phone ?? '923366888806');
@@ -639,16 +668,20 @@
                             $cleanWhatsapp = '923366888806';
                         }
                     @endphp
-                    <a href="https://wa.me/{{$cleanWhatsapp}}?text={{urlencode('Hi YN-Trading, I would like expert styling assistance for popular choices.')}}" target="_blank" class="popular-whatsapp-btn">
-                        <i class="fa fa-whatsapp mr-1"></i> WhatsApp Styling Concierge
-                    </a>
+                    <div class="mt-4 pt-3 border-top">
+                        <a href="https://wa.me/{{$cleanWhatsapp}}?text={{urlencode('Hi YN-Trading, I would like to consult on the Shop The Look Popular Choices ensemble.')}}" target="_blank" class="ensemble-whatsapp-btn">
+                            <i class="fa fa-whatsapp mr-2" style="font-size: 16px;"></i> Ask Stylist On WhatsApp
+                        </a>
+                    </div>
+
                 </div>
             </div>
+
         </div>
 
     </div>
 </section>
-<!-- End POPULAR CHOICES Section -->
+<!-- End POPULAR CHOICES: INTERACTIVE HOTSPOT LOOKBOOK -->
 
 <!-- 7. Hot Trending Items Carousel -->
 <div class="product-area most-popular section py-5">
@@ -1172,22 +1205,44 @@
             });
         }
 
-        /* 3. Popular Choices Filter Pills */
-        $(document).on('click', '.pop-pill', function() {
-            var filter = $(this).data('filter');
-            $('.pop-pill').removeClass('active');
-            $(this).addClass('active');
+        /* 3. Interactive Lookbook Hotspots & Ensemble Linking */
+        $('.lookbook-pin-btn').on('click', function(e) {
+            e.stopPropagation();
+            var $pinWrap = $(this).closest('.lookbook-pin-wrap');
+            var spotId = $pinWrap.data('spot-id');
+            var isActive = $pinWrap.hasClass('active');
 
-            if (filter === 'all') {
-                $('.popular-grid-col').fadeIn(250);
-            } else {
-                $('.popular-grid-col').each(function() {
-                    if ($(this).data('cat') === filter) {
-                        $(this).fadeIn(250);
-                    } else {
-                        $(this).fadeOut(150);
-                    }
-                });
+            $('.lookbook-pin-wrap').removeClass('active');
+            $('.ensemble-item-card').removeClass('active');
+
+            if (!isActive) {
+                $pinWrap.addClass('active');
+                $('.ensemble-item-card[data-spot-id="' + spotId + '"]').addClass('active');
+            }
+        });
+
+        $('.popover-close-btn').on('click', function(e) {
+            e.stopPropagation();
+            $(this).closest('.lookbook-pin-wrap').removeClass('active');
+            $('.ensemble-item-card').removeClass('active');
+        });
+
+        $('.ensemble-item-card').on('mouseenter', function() {
+            var spotId = $(this).data('spot-id');
+            $('.ensemble-item-card').removeClass('active');
+            $(this).addClass('active');
+            $('.lookbook-pin-wrap').removeClass('active');
+            $('.lookbook-pin-wrap[data-spot-id="' + spotId + '"]').addClass('active');
+        }).on('mouseleave', function() {
+            var spotId = $(this).data('spot-id');
+            $(this).removeClass('active');
+            $('.lookbook-pin-wrap[data-spot-id="' + spotId + '"]').removeClass('active');
+        });
+
+        $(document).on('click', function(e) {
+            if (!$(e.target).closest('.lookbook-pin-wrap').length) {
+                $('.lookbook-pin-wrap').removeClass('active');
+                $('.ensemble-item-card').removeClass('active');
             }
         });
 

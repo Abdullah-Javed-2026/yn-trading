@@ -108,7 +108,152 @@
             </div>
         </div>
 
-        <!-- Section 3: Brand Media (Logo & Photo) -->
+        <!-- Section 3: Interactive Hotspot Lookbook (Shop The Look) Manager -->
+        @php
+            $lookbook = !empty($data->lookbook_data) ? json_decode($data->lookbook_data, true) : null;
+            $lookItems = $lookbook['items'] ?? [
+                ['id' => 1, 'product_id' => '', 'tag' => 'ITEM 01 • SCARF / DUPATTA', 'top' => '22%', 'left' => '44%', 'title' => 'Pure Silk Embroidered Dupatta', 'category' => 'Festive Silk', 'price' => 3850, 'photo' => ''],
+                ['id' => 2, 'product_id' => '', 'tag' => 'ITEM 02 • DESIGNER SHIRT', 'top' => '50%', 'left' => '60%', 'title' => 'Hand-Crafted Designer Pret Kurti', 'category' => 'Luxury Pret', 'price' => 6950, 'photo' => ''],
+                ['id' => 3, 'product_id' => '', 'tag' => 'ITEM 03 • RAW SILK BOTTOM', 'top' => '80%', 'left' => '42%', 'title' => 'Raw Silk Tailored Straight Trousers', 'category' => 'Bottoms & Pants', 'price' => 2950, 'photo' => ''],
+            ];
+        @endphp
+        <div class="p-3 mb-4 rounded border border-primary" style="background: #f8fbff;">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="text-primary font-weight-bold m-0">
+                    <i class="fas fa-crosshairs mr-2"></i> Interactive Hotspot Lookbook (Popular Choices — Shop The Look)
+                </h6>
+                <span class="badge badge-primary px-2 py-1">Interactive Frontend Feature</span>
+            </div>
+            <p class="small text-muted mb-3">
+                Control the model photoshoot, titles, 3 interactive hotspot pins, coordinates, and linked store products from here.
+            </p>
+
+            <!-- Lookbook General Settings -->
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="lookbook_subtitle" class="col-form-label font-weight-bold">Lookbook Subtitle</label>
+                        <input type="text" class="form-control" name="lookbook_subtitle" id="lookbook_subtitle" value="{{$lookbook['subtitle'] ?? 'INTERACTIVE LOOKBOOK'}}">
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label for="lookbook_title" class="col-form-label font-weight-bold">Lookbook Main Title</label>
+                        <input type="text" class="form-control" name="lookbook_title" id="lookbook_title" value="{{$lookbook['title'] ?? 'Popular Choices — Shop The Look'}}">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="lookbook_description" class="col-form-label font-weight-bold">Lookbook Description Text</label>
+                <textarea class="form-control" name="lookbook_description" id="lookbook_description" rows="2">{{$lookbook['description'] ?? 'Hover or tap on the glowing hotspots (+) to discover and shop the curated designer pieces.'}}</textarea>
+            </div>
+
+            <!-- Lookbook Model Main Image -->
+            <div class="form-group mb-4">
+                <label for="lookbook_image" class="col-form-label font-weight-bold">
+                    <i class="fas fa-image mr-1"></i> Lookbook Main Model Photoshoot Photo
+                </label>
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <a id="lfm2" data-input="thumbnail2" data-preview="holder2" class="btn btn-primary text-white">
+                            <i class="fa fa-picture-o"></i> Choose Image
+                        </a>
+                    </span>
+                    <input id="thumbnail2" class="form-control" type="text" name="lookbook_image" value="{{$lookbook['image'] ?? 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=1200&q=85'}}" placeholder="Image URL or choose from media">
+                </div>
+                <div id="holder2" style="margin-top:10px; max-height:120px;">
+                    @if(!empty($lookbook['image']))
+                        <img src="{{$lookbook['image']}}" style="max-height:90px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" alt="Lookbook Model">
+                    @endif
+                </div>
+            </div>
+
+            <!-- 3 Hotspot Item Config Cards -->
+            <h6 class="font-weight-bold text-dark mt-4 mb-3 border-bottom pb-2">
+                <i class="fas fa-tags mr-2"></i> Configure 3 Lookbook Hotspot Items
+            </h6>
+
+            <div class="row">
+                @for($idx = 1; $idx <= 3; $idx++)
+                    @php
+                        $curItem = $lookItems[$idx - 1] ?? [];
+                    @endphp
+                    <div class="col-lg-4 col-md-12 mb-3">
+                        <div class="card shadow-none border bg-white rounded p-3 h-100">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="badge badge-dark font-weight-bold">HOTSPOT #{{$idx}}</span>
+                                <small class="text-muted font-italic">{{$idx == 1 ? 'Top / Dupatta' : ($idx == 2 ? 'Middle / Shirt' : 'Bottom / Pants')}}</small>
+                            </div>
+
+                            <!-- Link to Existing Product -->
+                            <div class="form-group mb-2">
+                                <label class="small font-weight-bold mb-1">Select Store Product (Automatic Sync):</label>
+                                <select name="lookbook_item{{$idx}}_product_id" class="form-control form-control-sm">
+                                    <option value="">-- Custom / Fallback Item --</option>
+                                    @if(isset($products) && count($products) > 0)
+                                        @foreach($products as $prod)
+                                            <option value="{{$prod->id}}" {{($curItem['product_id'] ?? '') == $prod->id ? 'selected' : ''}}>
+                                                {{$prod->title}} (PKR {{number_format($prod->price, 0)}})
+                                            </option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                            </div>
+
+                            <!-- Item Tag -->
+                            <div class="form-group mb-2">
+                                <label class="small font-weight-bold mb-1">Tag Badge:</label>
+                                <input type="text" class="form-control form-control-sm" name="lookbook_item{{$idx}}_tag" value="{{$curItem['tag'] ?? ('ITEM 0'.$idx.' • APPAREL')}}">
+                            </div>
+
+                            <!-- Category & Custom Title -->
+                            <div class="form-group mb-2">
+                                <label class="small font-weight-bold mb-1">Category / Fabric:</label>
+                                <input type="text" class="form-control form-control-sm" name="lookbook_item{{$idx}}_category" value="{{$curItem['category'] ?? ''}}" placeholder="e.g. Festive Silk">
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <label class="small font-weight-bold mb-1">Item Title Override (Optional):</label>
+                                <input type="text" class="form-control form-control-sm" name="lookbook_item{{$idx}}_title" value="{{$curItem['title'] ?? ''}}" placeholder="e.g. Embroidered Silk Kurti">
+                            </div>
+
+                            <!-- Custom Price -->
+                            <div class="form-group mb-2">
+                                <label class="small font-weight-bold mb-1">Price Override (PKR):</label>
+                                <input type="number" class="form-control form-control-sm" name="lookbook_item{{$idx}}_price" value="{{$curItem['price'] ?? ''}}" placeholder="e.g. 4500">
+                            </div>
+
+                            <!-- Coordinates: Top% & Left% -->
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group mb-2">
+                                        <label class="small font-weight-bold mb-1">Top Pin %:</label>
+                                        <input type="text" class="form-control form-control-sm" name="lookbook_item{{$idx}}_top" value="{{$curItem['top'] ?? ($idx == 1 ? '22%' : ($idx == 2 ? '50%' : '80%'))}}" placeholder="e.g. 25%">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group mb-2">
+                                        <label class="small font-weight-bold mb-1">Left Pin %:</label>
+                                        <input type="text" class="form-control form-control-sm" name="lookbook_item{{$idx}}_left" value="{{$curItem['left'] ?? ($idx == 1 ? '44%' : ($idx == 2 ? '60%' : '42%'))}}" placeholder="e.g. 50%">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Photo URL Override -->
+                            <div class="form-group mb-0">
+                                <label class="small font-weight-bold mb-1">Thumbnail Photo (URL):</label>
+                                <input type="text" class="form-control form-control-sm" name="lookbook_item{{$idx}}_photo" value="{{$curItem['photo'] ?? ''}}" placeholder="Image URL">
+                            </div>
+
+                        </div>
+                    </div>
+                @endfor
+            </div>
+
+        </div>
+
+        <!-- Section 4: Brand Media (Logo & Photo) -->
         <div class="p-3 mb-4 rounded border border-info" style="background: #f9fcff;">
             <h6 class="text-info font-weight-bold mb-3">
                 <i class="fas fa-images mr-2"></i> Brand Media & Imagery
@@ -205,6 +350,7 @@
 <script>
     $('#lfm').filemanager('image');
     $('#lfm1').filemanager('image');
+    $('#lfm2').filemanager('image');
     $(document).ready(function() {
     $('#summary').summernote({
       placeholder: "Write short description.....",
