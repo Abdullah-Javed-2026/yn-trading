@@ -52,7 +52,6 @@ class AdminController extends Controller
     }
 
     public function settingsUpdate(Request $request){
-        // return $request->all();
         $this->validate($request,[
             'short_des'=>'required|string',
             'description'=>'required|string',
@@ -61,19 +60,22 @@ class AdminController extends Controller
             'address'=>'required|string',
             'email'=>'required|email',
             'phone'=>'required|string',
+            'whatsapp'=>'nullable|string',
+            'announcement'=>'nullable|string',
         ]);
         $data=$request->all();
-        // return $data;
         $settings=Settings::first();
-        // return $settings;
+        if(!$settings){
+            $settings = new Settings();
+        }
         $status=$settings->fill($data)->save();
         if($status){
-            request()->session()->flash('success','Setting successfully updated');
+            request()->session()->flash('success','Settings successfully updated');
         }
         else{
             request()->session()->flash('error','Please try again');
         }
-        return redirect()->route('admin');
+        return redirect()->back();
     }
 
     public function changePassword(){

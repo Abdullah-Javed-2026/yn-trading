@@ -1,70 +1,174 @@
+@php
+    $settings = DB::table('settings')->get();
+    $rawAnnouncements = (count($settings) > 0 && !empty($settings[0]->announcement)) 
+        ? $settings[0]->announcement 
+        : '✨ FREE NATIONWIDE SHIPPING ON ORDERS ABOVE RS. 2,999 | 100% ORIGINAL DESIGNER FABRICS & LUXURY PRET | CASH ON DELIVERY AVAILABLE ACROSS PAKISTAN';
+    
+    $announcementItems = array_values(array_filter(array_map('trim', explode('|', $rawAnnouncements))));
+    if (empty($announcementItems)) {
+        $announcementItems = [
+            '✨ FREE NATIONWIDE SHIPPING ON ORDERS ABOVE RS. 2,999',
+            '100% ORIGINAL DESIGNER FABRICS & LUXURY PRET',
+            'CASH ON DELIVERY AVAILABLE ACROSS PAKISTAN'
+        ];
+    }
+    $tickerList = $announcementItems;
+    while (count($tickerList) < 4) {
+        $tickerList = array_merge($tickerList, $announcementItems);
+    }
+@endphp
 <header class="header shop custom-header">
-    <!-- Top Announcement Bar -->
+    <!-- Top Announcement Bar (Solid Obsidian Black, Crisp White Text, Infinite Luxury Marquee) -->
     <div class="top-announcement-bar">
-        <div class="announcement-ticker-wrap">
-            <div class="announcement-ticker">
-                <span>YN Trading Azadi Sale is LIVE | Up to 50% OFF – Shop Now!</span>
-                <span>YN Trading Azadi Sale is LIVE | Up to 50% OFF – Shop Now!</span>
-                <span>YN Trading Azadi Sale is LIVE | Up to 50% OFF – Shop Now!</span>
-                <span>YN Trading Azadi Sale is LIVE | Up to 50% OFF – Shop Now!</span>
-                <span>YN Trading Azadi Sale is LIVE | Up to 50% OFF – Shop Now!</span>
-                <span>YN Trading Azadi Sale is LIVE | Up to 50% OFF – Shop Now!</span>
+        <div class="container-fluid text-center px-0">
+            <div class="announcement-ticker-wrap">
+                <div class="announcement-ticker">
+                    <div class="ticker-content">
+                        @foreach($tickerList as $item)
+                            <span class="ticker-item">{{$item}}</span>
+                            <span class="ticker-dot">•</span>
+                        @endforeach
+                    </div>
+                    <div class="ticker-content" aria-hidden="true">
+                        @foreach($tickerList as $item)
+                            <span class="ticker-item">{{$item}}</span>
+                            <span class="ticker-dot">•</span>
+                        @endforeach
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    
 
-    <!-- Main Minimalist Navbar -->
+    <!-- Main Luxury Navbar -->
     <div class="main-navbar-bar">
-        <div class="container-fluid custom-nav-container">
-            <div class="d-flex align-items-center justify-content-between navbar-header-row border-bottom">
+        <div class="container-fluid px-lg-4 px-3">
+            <div class="navbar-header-row">
                 
-                <!-- Left: Hamburger Menu Icon -->
-                <div class="nav-left-item d-flex align-items-center">
-                    <button class="hamburger-menu-btn" type="button" id="menuToggleBtn" title="Open Sidebar Menu">
+                <!-- Left: Hamburger (Mobile Only) & Brand Logo -->
+                <div class="nav-left-branding d-flex align-items-center">
+                    <!-- Mobile Hamburger Button (Only on <= 991px) -->
+                    <button class="hamburger-menu-btn" type="button" id="menuToggleBtn" title="Open Menu">
                         <i class="ti-menu"></i>
                     </button>
-                </div>
 
-                <!-- Center: Logo -->
-                <div class="nav-center-logo text-center d-flex align-items-center justify-content-center">
-                    @php
-                        $settings=DB::table('settings')->get();
-                    @endphp                    
+                    <!-- Brand Logo -->
                     <a href="{{route('home')}}" class="logo-link d-inline-flex align-items-center">
-                        <img src="@foreach($settings as $data) {{$data->logo}} @endforeach" alt="logo" class="header-logo-img">
+                        @if(count($settings) > 0 && !empty($settings[0]->logo))
+                            <img src="{{$settings[0]->logo}}" alt="YN Trading Logo" class="header-logo-img">
+                        @else
+                            <span class="logo-text-brand">YN TRADING</span>
+                        @endif
                     </a>
                 </div>
 
-                <!-- Right: Action Icons (User, Search, Cart) -->
-                <div class="nav-right-icons d-flex align-items-center">
-                    <!-- User Icon -->
-                    <div class="icon-item user-wrap mr-3">
-                        @auth
-                            @if(Auth::user()->role=='admin')
-                                <a href="{{route('admin')}}" title="Dashboard" class="action-icon-link"><i class="ti-user"></i></a>
-                            @else
-                                <a href="{{route('user')}}" title="Account" class="action-icon-link"><i class="ti-user"></i></a>
-                            @endif
+                <!-- Center: Desktop Luxury Navigation Menu (Hidden on <= 991px) -->
+                <nav class="luxury-desktop-nav-wrap">
+                    <ul class="luxury-desktop-nav">
+                        <li class="luxury-nav-item">
+                            <a href="{{route('home')}}" class="luxury-nav-link">Home</a>
+                        </li>
+                        <li class="luxury-nav-item">
+                            <a href="{{route('product-grids')}}" class="luxury-nav-link">New Arrivals</a>
+                        </li>
+
+                        <!-- Collections Dropdown -->
+                        <li class="luxury-nav-item has-dropdown">
+                            <a href="javascript:void(0);" class="luxury-nav-link">
+                                Collections <i class="ti-angle-down"></i>
+                            </a>
+                            <ul class="luxury-dropdown-menu">
+                                @php
+                                    $navCategories = Helper::getAllCategory();
+                                @endphp
+                                @if($navCategories && count($navCategories) > 0)
+                                    @foreach($navCategories as $cat)
+                                        <li class="cat-dropdown-item">
+                                            <a href="{{route('product-cat', $cat->slug)}}">
+                                                <span>{{$cat->title}}</span>
+                                                @if($cat->child_cat && $cat->child_cat->count() > 0)
+                                                    <i class="ti-angle-right"></i>
+                                                @endif
+                                            </a>
+                                            @if($cat->child_cat && $cat->child_cat->count() > 0)
+                                                <ul class="sub-menu">
+                                                    @foreach($cat->child_cat as $sub_cat)
+                                                        <li>
+                                                            <a href="{{route('product-sub-cat', [$cat->slug, $sub_cat->slug])}}">
+                                                                {{$sub_cat->title}}
+                                                            </a>
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            @endif
+                                        </li>
+                                    @endforeach
+                                @else
+                                    <li><a href="{{route('product-grids')}}">All Apparel</a></li>
+                                @endif
+                            </ul>
+                        </li>
+
+                        <li class="luxury-nav-item">
+                            <a href="{{route('product-grids')}}" class="luxury-nav-link">
+                                Hot Sale <span class="hot-sale-pill">HOT</span>
+                            </a>
+                        </li>
+
+                        <li class="luxury-nav-item">
+                            <a href="{{route('about-us')}}" class="luxury-nav-link">About Us</a>
+                        </li>
+
+                        <li class="luxury-nav-item">
+                            <a href="{{route('contact')}}" class="luxury-nav-link">Contact</a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <!-- Right: Action Icons (Search, User, Wishlist, Cart) -->
+                <div class="header-action-icons-wrap">
+                    
+                    <!-- Search Icon Trigger -->
+                    <button class="nav-action-btn" id="searchToggleBtn" type="button" title="Search Products">
+                        <i class="ti-search"></i>
+                    </button>
+
+                    <!-- User Account -->
+                    @auth
+                        @if(Auth::user()->role=='admin')
+                            <a href="{{route('admin')}}" title="Admin Dashboard" class="nav-action-link">
+                                <i class="ti-user"></i>
+                            </a>
                         @else
-                            <a href="{{route('login.form')}}" title="Login / Register" class="action-icon-link"><i class="ti-user"></i></a>
-                        @endauth
-                    </div>
-
-                    <!-- Search Icon -->
-                    <div class="icon-item search-wrap mr-3">
-                        <button class="action-icon-btn" id="searchToggleBtn" type="button" title="Search">
-                            <i class="ti-search"></i>
-                        </button>
-                    </div>
-
-                    <!-- Shopping Cart / Bag Icon -->
-                    <div class="icon-item cart-wrap sinlge-bar shopping">
-                        <a href="{{route('cart')}}" class="single-icon action-icon-link" title="Shopping Bag">
-                            <i class="ti-bag"></i>
-                            <span class="total-count">{{Helper::cartCount()}}</span>
+                            <a href="{{route('user')}}" title="My Account" class="nav-action-link">
+                                <i class="ti-user"></i>
+                            </a>
+                        @endif
+                    @else
+                        <a href="{{route('login.form')}}" title="Login / Register" class="nav-action-link">
+                            <i class="ti-user"></i>
                         </a>
-                        <!-- Shopping Cart Item Dropdown -->
+                    @endauth
+
+                    <!-- Wishlist Icon with Live Count Badge -->
+                    <a href="{{route('wishlist')}}" class="nav-action-link" title="My Wishlist">
+                        <i class="ti-heart"></i>
+                        @php
+                            $wishlistCount = Helper::wishlistCount();
+                        @endphp
+                        @if($wishlistCount > 0)
+                            <span class="badge-count">{{$wishlistCount}}</span>
+                        @endif
+                    </a>
+
+                    <!-- Shopping Cart / Bag with Dropdown -->
+                    <div class="cart-dropdown-wrapper sinlge-bar shopping">
+                        <a href="{{route('cart')}}" class="nav-action-link" title="Shopping Bag">
+                            <i class="ti-bag"></i>
+                            <span class="badge-count">{{Helper::cartCount()}}</span>
+                        </a>
+
+                        <!-- Mini Cart Dropdown -->
                         <div class="shopping-item">
                             <div class="dropdown-cart-header">
                                 <span>{{count(Helper::getAllProductFromCart())}} Items</span>
@@ -92,39 +196,42 @@
                                     <span>Total</span>
                                     <span class="total-amount">PKR {{number_format(Helper::totalCartPrice(),0)}}</span>
                                 </div>
-                                <a href="{{route('checkout')}}" class="btn animate">Checkout</a>
+                                <a href="{{route('checkout')}}" class="btn btn-dark" style="background: #111111 !important; color: #ffffff !important; width: 100%; border-radius: 4px; font-weight: 600; padding: 10px;">Proceed To Checkout</a>
                             </div>
                         </div>
                     </div>
+
                 </div>
 
             </div>
 
-            <!-- Search Dropdown Overlay -->
-            <div class="header-search-overlay" id="searchOverlay" style="display: none;">
-                <div class="container py-3">
-                    <form method="POST" action="{{route('product.search')}}" class="d-flex align-items-center justify-content-center">
+            <!-- Slide-down Search Overlay -->
+            <div class="header-search-overlay" id="searchOverlay">
+                <div class="container" style="max-width: 720px;">
+                    <form method="POST" action="{{route('product.search')}}">
                         @csrf
-                        <div class="search-bar-pill d-flex align-items-stretch" style="max-width: 650px; width: 100%; border: 1px solid #111111; border-radius: 30px; overflow: hidden; background: #ffffff; height: 46px;">
-                            <input name="search" placeholder="Search Products Here....." type="search" class="form-control" style="border: none !important; box-shadow: none !important; border-radius: 30px 0 0 30px !important; padding: 0 20px !important; height: 100% !important; background: transparent; font-size: 14px; color: #111111;">
-                            <button class="btn btn-dark" type="submit" style="border: none !important; border-radius: 0 30px 30px 0 !important; padding: 0 28px !important; height: 100% !important; background: #000000 !important; color: #ffffff !important; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 6px; white-space: nowrap;">
-                                <i class="ti-search"></i> Search
+                        <div class="search-input-box">
+                            <input name="search" placeholder="Search unstitched, luxury pret, lawn, formal suits..." type="search" class="form-control">
+                            <button class="search-submit-btn" type="submit">
+                                <i class="ti-search mr-1"></i> Search
                             </button>
                         </div>
                     </form>
                 </div>
             </div>
+
         </div>
     </div>
 </header>
 
-<!-- Left Sidebar Drawer Overlay -->
+<!-- Left Mobile Sidebar Drawer Overlay -->
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
-<!-- Left Sidebar Drawer -->
+<!-- Left Mobile Sidebar Drawer (Off-Canvas) -->
 <aside class="left-sidebar-drawer" id="leftSidebarDrawer">
     <!-- Header with Close Button -->
-    <div class="sidebar-header d-flex justify-content-end align-items-center">
+    <div class="sidebar-header">
+        <span class="sidebar-title">Menu</span>
         <button type="button" class="close-sidebar-btn" id="closeSidebarBtn" title="Close Menu">&times;</button>
     </div>
 
@@ -138,11 +245,11 @@
                 <a href="{{route('product-grids')}}" class="sidebar-link">New Arrivals</a>
             </li>
 
-            <!-- Dynamic Categories -->
+            <!-- Dynamic Categories in Mobile Drawer -->
             @foreach(Helper::getAllCategory() as $cat)
                 @if($cat->child_cat && $cat->child_cat->count() > 0)
                     <li class="sidebar-item has-sub">
-                        <div class="sidebar-link-wrap d-flex justify-content-between align-items-center">
+                        <div class="sidebar-link-wrap">
                             <a href="{{route('product-cat', $cat->slug)}}" class="sidebar-link">{{$cat->title}}</a>
                             <span class="sub-toggle-icon"><i class="ti-angle-down"></i></span>
                         </div>
@@ -162,6 +269,12 @@
             @endforeach
 
             <li class="sidebar-item">
+                <a href="{{route('wishlist')}}" class="sidebar-link d-flex justify-content-between align-items-center">
+                    <span>Wishlist</span>
+                    <span class="badge badge-dark" style="background: #111111; color: #ffffff;">{{Helper::wishlistCount()}}</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
                 <a href="{{route('about-us')}}" class="sidebar-link">About Us</a>
             </li>
             <li class="sidebar-item">
@@ -171,232 +284,452 @@
     </div>
 </aside>
 
+<!-- Dedicated Header & Off-Canvas Styles -->
 <style>
-/* Top Announcement Ticker Bar */
+/* 1. Announcement Bar */
 .top-announcement-bar {
-    background-color: #000000;
-    color: #ffffff;
-    padding: 8px 0;
+    background: #000000 !important;
+    color: #ffffff !important;
+    padding: 7px 0 !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.8px !important;
+    text-transform: uppercase !important;
     overflow: hidden;
-    white-space: nowrap;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
+    position: relative;
+    z-index: 1000;
 }
-
 .announcement-ticker-wrap {
     width: 100%;
     overflow: hidden;
-}
-
-.announcement-ticker {
-    display: inline-block;
     white-space: nowrap;
-    animation: announcement-scroll 30s linear infinite;
 }
-
-.announcement-ticker span {
-    display: inline-block;
-    padding-right: 60px;
+.announcement-ticker {
+    display: inline-flex;
+    white-space: nowrap;
+    animation: announcement-ticker-scroll 32s linear infinite;
+    will-change: transform;
 }
-
-@keyframes announcement-scroll {
-    0% {
-        transform: translate3d(0, 0, 0);
-    }
-    100% {
-        transform: translate3d(-50%, 0, 0);
-    }
+.announcement-ticker-wrap:hover .announcement-ticker {
+    animation-play-state: paused;
 }
-
-.main-navbar-bar {
-    background-color: #ffffff;
-    position: relative;
-    z-index: 99;
-}
-
-.hamburger-menu-btn {
-    background: transparent;
-    border: none;
-    font-size: 24px;
-    color: #000000;
-    cursor: pointer;
-    outline: none !important;
-    padding: 5px 8px;
-    line-height: 1;
-}
-
-.hamburger-menu-btn:hover {
-    color: #f7941d;
-}
-
-.action-icon-link, .action-icon-btn {
-    background: transparent;
-    border: none;
-    font-size: 22px;
-    color: #000000 !important;
-    cursor: pointer;
-    outline: none !important;
-    padding: 5px;
+.ticker-content {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    text-decoration: none !important;
-    line-height: 1;
+    flex-shrink: 0;
+}
+.ticker-item {
+    display: inline-block;
+    padding: 0 16px;
+    font-size: 11.5px;
+    color: #ffffff;
+}
+.ticker-dot {
+    display: inline-block;
+    color: #888888;
+    padding: 0 4px;
+    font-size: 10px;
+}
+@keyframes announcement-ticker-scroll {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-50%, 0, 0); }
 }
 
-.action-icon-link:hover, .action-icon-btn:hover {
-    color: #f7941d !important;
+/* 2. Main Navbar Bar */
+.main-navbar-bar {
+    background: #ffffff !important;
+    border-bottom: 1px solid #f0f0f0 !important;
+    position: relative;
+    z-index: 999;
+}
+.navbar-header-row {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    min-height: 72px;
+    width: 100%;
+}
+.header-logo-img {
+    max-height: 46px;
+    width: auto;
+    object-fit: contain;
+}
+.logo-text-brand {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    color: #111111;
 }
 
-.nav-right-icons .cart-wrap {
+/* 3. Desktop Navigation */
+.luxury-desktop-nav-wrap {
+    display: block;
+}
+.luxury-desktop-nav {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 4px;
+}
+.luxury-nav-item {
     position: relative;
 }
-
-.header-search-overlay {
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #e2e8f0;
+.luxury-nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 26px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #111111 !important;
+    text-decoration: none !important;
+    position: relative;
+    transition: color 0.2s ease;
+}
+.luxury-nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 16px;
+    left: 14px;
+    right: 14px;
+    height: 2px;
+    background: #111111;
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.luxury-nav-link:hover::after,
+.luxury-nav-item:hover > .luxury-nav-link::after {
+    transform: scaleX(1);
+}
+.luxury-nav-link i {
+    font-size: 10px;
+    margin-left: 2px;
+    transition: transform 0.25s ease;
+}
+.luxury-nav-item:hover > .luxury-nav-link i {
+    transform: rotate(180deg);
+}
+.hot-sale-pill {
+    background: #c62828;
+    color: #ffffff;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-left: 4px;
 }
 
-/* Sidebar Backdrop Overlay */
-.sidebar-backdrop {
-    position: fixed;
-    top: 0;
+/* 4. Dropdowns */
+.luxury-dropdown-menu {
+    position: absolute;
+    top: 100%;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.4);
-    z-index: 99998;
+    min-width: 240px;
+    background: #ffffff;
+    border: 1px solid #e8e8e8;
+    border-radius: 8px;
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.09);
+    padding: 10px 0;
+    list-style: none;
+    margin: 0;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    transform: translateY(10px);
+    transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+    z-index: 1000;
 }
-
-.sidebar-backdrop.active {
+.luxury-nav-item:hover > .luxury-dropdown-menu {
     opacity: 1;
     visibility: visible;
+    transform: translateY(0);
 }
-
-/* Left Sidebar Drawer */
-.left-sidebar-drawer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 340px;
-    max-width: 85vw;
-    height: 100vh;
-    background-color: #ffffff;
-    z-index: 99999;
-    transform: translateX(-100%);
-    transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
-    box-shadow: 4px 0 25px rgba(0, 0, 0, 0.15);
+.luxury-dropdown-menu li {
+    position: relative;
+}
+.luxury-dropdown-menu li a {
     display: flex;
-    flex-direction: column;
-    overflow: hidden;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #333333 !important;
+    text-decoration: none !important;
+    transition: all 0.2s ease;
 }
-
-.left-sidebar-drawer.active {
+.luxury-dropdown-menu li a:hover {
+    background: #f8f8f8;
+    color: #000000 !important;
+    padding-left: 24px;
+}
+.luxury-dropdown-menu .sub-menu {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    min-width: 220px;
+    background: #ffffff;
+    border: 1px solid #e8e8e8;
+    border-radius: 8px;
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.09);
+    padding: 10px 0;
+    list-style: none;
+    margin: 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(10px);
+    transition: all 0.25s ease;
+}
+.luxury-dropdown-menu li:hover > .sub-menu {
+    opacity: 1;
+    visibility: visible;
     transform: translateX(0);
 }
 
-.sidebar-header {
-    border-bottom: 1px solid #f0f0f0;
-    padding: 15px 20px !important;
+/* 5. Right Action Icons */
+.header-action-icons-wrap {
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px;
+}
+.nav-action-btn,
+.nav-action-link {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: #111111 !important;
+    background: transparent;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+    text-decoration: none !important;
+    outline: none !important;
+}
+.nav-action-btn:hover,
+.nav-action-link:hover {
+    background: #f4f4f4;
+    color: #000000 !important;
+}
+.badge-count {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: #111111;
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 700;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.cart-dropdown-wrapper {
+    position: relative;
 }
 
+/* 6. Hamburger Menu Button */
+.hamburger-menu-btn {
+    background: transparent;
+    border: none;
+    font-size: 22px;
+    color: #111111;
+    cursor: pointer;
+    outline: none !important;
+    padding: 6px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 7. Slide-Down Search Overlay */
+.header-search-overlay {
+    display: none;
+    background: #ffffff;
+    border-top: 1px solid #f0f0f0;
+    padding: 16px 0;
+}
+.search-input-box {
+    display: flex;
+    align-items: stretch;
+    border: 1.5px solid #111111;
+    border-radius: 40px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    height: 48px;
+}
+.search-input-box input {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 20px !important;
+    font-size: 14px;
+    color: #111111;
+    height: 100% !important;
+    background: transparent;
+}
+.search-submit-btn {
+    background: #111111 !important;
+    color: #ffffff !important;
+    border: none !important;
+    padding: 0 24px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    font-size: 12px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 8. Off-Canvas Sidebar Drawer & Backdrop (CRITICAL: MUST BE FIXED OFF-CANVAS) */
+.sidebar-backdrop {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    z-index: 99998 !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transition: opacity 0.3s ease, visibility 0.3s ease !important;
+}
+.sidebar-backdrop.active {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+.left-sidebar-drawer {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 320px !important;
+    max-width: 85vw !important;
+    height: 100vh !important;
+    background-color: #ffffff !important;
+    z-index: 99999 !important;
+    transform: translateX(-100%) !important;
+    transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1) !important;
+    box-shadow: 4px 0 25px rgba(0, 0, 0, 0.18) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+}
+.left-sidebar-drawer.active {
+    transform: translateX(0) !important;
+}
+.sidebar-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 16px 20px !important;
+}
+.sidebar-title {
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #111111;
+}
 .close-sidebar-btn {
     background: transparent;
     border: none;
-    font-size: 28px;
+    font-size: 26px;
     color: #333333;
     cursor: pointer;
     line-height: 1;
     outline: none !important;
     padding: 0;
 }
-
-.close-sidebar-btn:hover {
-    color: #000000;
-}
-
 .sidebar-body {
     flex: 1;
     overflow-y: auto;
 }
-
 .sidebar-menu-list {
     list-style: none;
     margin: 0;
     padding: 0;
 }
-
 .sidebar-item {
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f4f4f4;
 }
-
-.sidebar-link-wrap {
-    padding: 0 20px;
-}
-
 .sidebar-link {
     display: block;
-    padding: 16px 20px;
-    font-size: 16px;
-    font-weight: 400;
+    padding: 14px 20px;
+    font-size: 14px;
+    font-weight: 500;
     color: #222222 !important;
     text-decoration: none !important;
-    transition: color 0.2s ease;
 }
-
+.sidebar-link-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 15px;
+}
 .sidebar-link-wrap .sidebar-link {
-    padding: 16px 0;
     flex: 1;
 }
-
-.sidebar-link:hover {
-    color: #000000 !important;
-}
-
 .sub-toggle-icon {
-    font-size: 16px;
-    color: #444444;
+    font-size: 14px;
+    color: #666666;
+    padding: 10px;
     cursor: pointer;
-    padding: 16px 20px;
-    margin-right: -20px;
-    transition: transform 0.25s ease, color 0.2s ease;
-    user-select: none;
+    transition: transform 0.25s ease;
 }
-
-.sub-toggle-icon:hover {
-    color: #000000;
-}
-
 .sidebar-item.open .sub-toggle-icon {
     transform: rotate(180deg);
 }
-
 .sidebar-sub-menu {
     list-style: none;
     margin: 0;
-    padding: 5px 0 15px 35px;
+    padding: 4px 0 12px 30px;
     display: none;
-    background-color: #fcfcfc;
-    border-top: 1px dashed #efefef;
+    background-color: #fafafa;
 }
-
 .sidebar-sub-menu li a {
     display: block;
     padding: 8px 0;
-    font-size: 14px;
-    font-weight: 400;
+    font-size: 13px;
     color: #555555 !important;
     text-decoration: none !important;
-    transition: color 0.2s ease, padding-left 0.2s ease;
 }
 
-.sidebar-sub-menu li a:hover {
-    color: #000000 !important;
-    font-weight: 600;
+/* 9. Responsive Breakpoints */
+@media (max-width: 991.98px) {
+    .hamburger-menu-btn {
+        display: inline-flex !important;
+        margin-right: 10px;
+    }
+    .luxury-desktop-nav-wrap {
+        display: none !important;
+    }
+    .navbar-header-row {
+        min-height: 60px;
+    }
+    .header-logo-img {
+        max-height: 40px;
+    }
+}
+@media (min-width: 992px) {
+    .hamburger-menu-btn {
+        display: none !important;
+    }
+    .luxury-desktop-nav-wrap {
+        display: block !important;
+    }
 }
 </style>
 
@@ -437,7 +770,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     if (searchBtn && searchOverlay) {
-        searchBtn.addEventListener('click', function() {
+        searchBtn.addEventListener('click', function(e) {
+            e.preventDefault();
             if (searchOverlay.style.display === 'none' || searchOverlay.style.display === '') {
                 searchOverlay.style.display = 'block';
             } else {
@@ -446,7 +780,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Toggle sub-menus in sidebar
+    // Mobile Sidebar submenus
     var subToggles = document.querySelectorAll('.sub-toggle-icon');
     subToggles.forEach(function(toggle) {
         toggle.addEventListener('click', function() {

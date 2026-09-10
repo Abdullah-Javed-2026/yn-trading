@@ -1,144 +1,125 @@
-
-<style>
-	footer.footer {
-		background: #ffffff !important;
-		border-top: none !important;
-		box-shadow: none !important;
-		color: #222222 !important;
-	}
-	footer.footer .footer-top {
-		background: #ffffff !important;
-		padding: 60px 0 45px !important;
-		border-top: none !important;
-	}
-	footer.footer h4 {
-		color: #111111 !important;
-		font-weight: 700 !important;
-		font-size: 14px !important;
-		letter-spacing: 1.2px !important;
-		text-transform: uppercase !important;
-		margin-bottom: 22px !important;
-	}
-	footer.footer p.text {
-		color: #555555 !important;
-		font-size: 14px !important;
-		line-height: 1.7 !important;
-		margin-top: 15px !important;
-		max-width: 380px;
-	}
-	footer.footer .call {
-		color: #111111 !important;
-		font-size: 12px !important;
-		font-weight: 600 !important;
-		margin-top: 20px !important;
-		text-transform: uppercase;
-		letter-spacing: 0.8px;
-	}
-	footer.footer .call span a {
-		color: #111111 !important;
-		font-weight: 700 !important;
-		font-size: 16px !important;
-		margin-top: 4px !important;
-		display: block !important;
-		text-decoration: none !important;
-	}
-	footer.footer ul li {
-		margin-bottom: 10px !important;
-	}
-	footer.footer ul li a {
-		color: #555555 !important;
-		font-size: 14px !important;
-		text-decoration: none !important;
-		transition: all 0.25s ease-in-out !important;
-	}
-	footer.footer ul li a:hover {
-		color: #000000 !important;
-		padding-left: 4px !important;
-	}
-	footer.footer .contact ul li {
-		color: #555555 !important;
-		font-size: 14px !important;
-		line-height: 1.6 !important;
-		margin-bottom: 12px !important;
-	}
-	.shop-services {
-		display: none !important;
-	}
-</style>
-
-	<!-- Start Footer Area -->
-	<footer class="footer">
-		<!-- Footer Top -->
-		<div class="footer-top section">
-			<div class="container">
+	<!-- Start Luxury Floating Rounded Footer -->
+	<footer class="footer luxury-floating-footer">
+		<div class="footer-card-container">
+			<div class="container-fluid px-0">
 				<div class="row">
-					<div class="col-lg-5 col-md-6 col-12">
-						<!-- Single Widget -->
-						<div class="single-footer about">
+					
+					<!-- Column 1: Brand Info & About -->
+					<div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-0">
+						<div class="single-footer about pr-lg-4">
 							@php
-								$settings=DB::table('settings')->get();
+								$settings = DB::table('settings')->get();
+								$phone = (count($settings) > 0 && !empty($settings[0]->phone)) ? $settings[0]->phone : '+92 336 6888806';
+								$rawWhatsapp = (count($settings) > 0 && !empty($settings[0]->whatsapp)) ? $settings[0]->whatsapp : $phone;
+								$cleanWhatsapp = preg_replace('/[^0-9]/', '', $rawWhatsapp);
+								if (substr($cleanWhatsapp, 0, 1) === '0') {
+									$cleanWhatsapp = '92' . substr($cleanWhatsapp, 1);
+								}
+								if (empty($cleanWhatsapp)) {
+									$cleanWhatsapp = '923366888806';
+								}
+								$email = (count($settings) > 0 && !empty($settings[0]->email)) ? $settings[0]->email : 'support@yntrading.com';
+								$address = (count($settings) > 0 && !empty($settings[0]->address)) ? $settings[0]->address : 'Tariq Road, PECHS Block 2, Karachi, Pakistan';
 							@endphp
-							<div class="logo">
-								<a href="{{route('home')}}">
-									<img src="@foreach($settings as $data) {{$data->logo}} @endforeach" alt="logo" style="max-height: 50px;">
+							<div class="logo mb-3">
+								<a href="{{route('home')}}" class="d-inline-block">
+									@if(count($settings) > 0 && !empty($settings[0]->logo))
+										<img src="{{$settings[0]->logo}}" alt="logo" style="max-height: 48px; filter: brightness(0) invert(1);">
+									@else
+										<span style="font-size: 20px; font-weight: 800; letter-spacing: 1.5px; color: #ffffff;">YN TRADING</span>
+									@endif
 								</a>
 							</div>
-							<p class="text">Welcome to YN Trading, Pakistan's premier online fashion store. Discover the finest collection of designer unstitched suits, pret wear, luxury lawn, and traditional Pakistani apparel.</p>
-							<p class="call">Got Question? Call us 24/7<span><a href="tel:+923001234567">+92 300 1234567</a></span></p>
-						</div>
-						<!-- End Single Widget -->
-					</div>
-					<div class="col-lg-2 col-md-6 col-12">
-						<!-- Single Widget -->
-						<div class="single-footer links">
-							<h4>Information</h4>
-							<ul>
-								<li><a href="{{route('about-us')}}">About Us</a></li>
-								<li><a href="#">Faq</a></li>
-								<li><a href="#">Terms & Conditions</a></li>
-								<li><a href="{{route('contact')}}">Contact Us</a></li>
-								<li><a href="#">Help</a></li>
-							</ul>
-						</div>
-						<!-- End Single Widget -->
-					</div>
-					<div class="col-lg-2 col-md-6 col-12">
-						<!-- Single Widget -->
-						<div class="single-footer links">
-							<h4>Customer Service</h4>
-							<ul>
-								<li><a href="#">Payment Methods</a></li>
-								<li><a href="#">Money-back</a></li>
-								<li><a href="#">Returns</a></li>
-								<li><a href="#">Shipping</a></li>
-								<li><a href="#">Privacy Policy</a></li>
-							</ul>
-						</div>
-						<!-- End Single Widget -->
-					</div>
-					<div class="col-lg-3 col-md-6 col-12">
-						<!-- Single Widget -->
-						<div class="single-footer social">
-							<h4>Get In Touch</h4>
-							<!-- Single Widget -->
-							<div class="contact">
-								<ul>
-									<li>Tariq Road, PECHS Block 2, Karachi, Pakistan</li>
-									<li>info@YNTrading.com</li>
-									<li>+92 300 1234567</li>
-								</ul>
+							<p class="text">Pakistan's premier fashion house. We bring you handpicked luxury fabrics, exquisite designer unstitched collections, and contemporary ready-to-wear pret wear crafted with perfection.</p>
+							
+							<div class="footer-social-strip">
+								<a href="#" class="footer-social-btn" title="Facebook"><i class="fa fa-facebook"></i></a>
+								<a href="#" class="footer-social-btn" title="Instagram"><i class="fa fa-instagram"></i></a>
+								<a href="https://wa.me/{{$cleanWhatsapp}}" target="_blank" class="footer-social-btn" title="WhatsApp"><i class="fa fa-whatsapp"></i></a>
+								<a href="#" class="footer-social-btn" title="TikTok"><i class="fa fa-music"></i></a>
 							</div>
-							<!-- End Single Widget -->
-							<div class="sharethis-inline-follow-buttons"></div>
 						</div>
-						<!-- End Single Widget -->
+					</div>
+
+					<!-- Column 2: Quick Links -->
+					<div class="col-lg-2 col-md-6 col-6 mb-4 mb-lg-0">
+						<div class="single-footer links">
+							<h4>Collections</h4>
+							<ul>
+								<li><a href="{{route('product-grids')}}">New Arrivals</a></li>
+								<li><a href="{{route('product-grids')}}">Luxury Pret</a></li>
+								<li><a href="{{route('product-grids')}}">Unstitched Lawn</a></li>
+								<li><a href="{{route('product-grids')}}">Formal Wear</a></li>
+								<li><a href="{{route('product-grids')}}">Festive Sale</a></li>
+							</ul>
+						</div>
+					</div>
+
+					<!-- Column 3: Customer Care -->
+					<div class="col-lg-3 col-md-6 col-6 mb-4 mb-lg-0">
+						<div class="single-footer links">
+							<h4>Customer Care</h4>
+							<ul>
+								<li><a href="{{route('order.track')}}">Track Your Order</a></li>
+								<li><a href="{{route('about-us')}}">About Our Brand</a></li>
+								<li><a href="#">Shipping & Delivery</a></li>
+								<li><a href="#">7-Day Exchange Policy</a></li>
+								<li><a href="{{route('contact')}}">Contact Support</a></li>
+							</ul>
+						</div>
+					</div>
+
+					<!-- Column 4: Store Location & Contact -->
+					<div class="col-lg-3 col-md-6 col-12">
+						<div class="single-footer contact">
+							<h4>Get In Touch</h4>
+							<div class="footer-contact-item">
+								<i class="ti-location-pin"></i>
+								<span>{{$address}}</span>
+							</div>
+							<div class="footer-contact-item">
+								<i class="ti-headphone-alt"></i>
+								<span>{{$phone}} (Mon-Sat 10am-8pm)</span>
+							</div>
+							<div class="footer-contact-item">
+								<i class="ti-email"></i>
+								<span>{{$email}}</span>
+							</div>
+							<div class="mt-3">
+								<a href="https://wa.me/{{$cleanWhatsapp}}?text={{urlencode('Hi YN-Trading, I would like assistance with an order.')}}" target="_blank" class="btn" style="background: #25D366; color: #ffffff; font-size: 12px; font-weight: 700; border-radius: 4px; padding: 8px 16px; border: none; display: inline-flex; align-items: center; gap: 6px;">
+									<i class="fa fa-whatsapp"></i> Chat on WhatsApp
+								</a>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<!-- Base Copyright Area Inside Rounded Card -->
+			<div class="footer-card-copyright">
+				<div class="container-fluid px-0">
+					<div class="row align-items-center">
+						<div class="col-lg-6 col-12 text-center text-lg-left mb-2 mb-lg-0">
+							<p style="margin: 0; font-size: 13px; color: #777777;">
+								&copy; {{date('Y')}} <a href="{{route('home')}}" style="color: #ffffff; font-weight: 600;">YN Trading</a>. All Rights Reserved.
+							</p>
+						</div>
+						<div class="col-lg-6 col-12 text-center text-lg-right">
+							<div class="d-inline-flex align-items-center" style="gap: 14px; color: #888888; font-size: 12px;">
+								<span><i class="fa fa-shield"></i> 100% Safe Checkout</span>
+								<span>•</span>
+								<span>Cash On Delivery</span>
+								<span>•</span>
+								<span>Debit / Credit Cards</span>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<!-- End Footer Top -->
 	</footer>
-	<!-- /End Footer Area -->
+	<!-- /End Luxury Floating Rounded Footer -->
  
 	<!-- Jquery -->
     <script src="{{asset('frontend/js/jquery.min.js')}}"></script>
@@ -202,23 +183,16 @@
 		  $('.alert').slideUp();
 		},5000);
 		$(function() {
-		// ------------------------------------------------------- //
-		// Multi Level dropdowns
-		// ------------------------------------------------------ //
 			$("ul.dropdown-menu [data-toggle='dropdown']").on("click", function(event) {
 				event.preventDefault();
 				event.stopPropagation();
-
 				$(this).siblings().toggleClass("show");
-
-
 				if (!$(this).next().hasClass('show')) {
-				$(this).parents('.dropdown-menu').first().find('.show').removeClass("show");
+					$(this).parents('.dropdown-menu').first().find('.show').removeClass("show");
 				}
 				$(this).parents('li.nav-item.dropdown.show').on('hidden.bs.dropdown', function(e) {
-				$('.dropdown-submenu .show').removeClass("show");
+					$('.dropdown-submenu .show').removeClass("show");
 				});
-
 			});
 		});
-	  </script>
+	</script>
