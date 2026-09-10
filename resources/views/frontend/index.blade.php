@@ -437,11 +437,224 @@
 </section>
 <!-- End Editorial Promotional Banners -->
 
-<!-- 6. Hot Trending Items Carousel -->
+<!-- 6. POPULAR CHOICES (Curated Luxury Spotlight & High-Demand Grid) -->
+<section class="popular-choices-section py-5">
+    <div class="container-fluid px-lg-5 px-3">
+        
+        <!-- Header with Subtitle & Interactive Filter Pills -->
+        <div class="popular-choices-header">
+            <div class="luxury-section-title text-left mb-0">
+                <span class="subtitle-tag" style="font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #111111; display: inline-block; margin-bottom: 6px;">
+                    <i class="fa fa-fire text-danger mr-1"></i> MOST LOVED & HIGHLY RATED
+                </span>
+                <h2 style="font-size: 28px; font-weight: 700; color: #111111; text-transform: uppercase; margin: 0; letter-spacing: -0.5px;">
+                    Popular Choices
+                </h2>
+                <p style="color: #666666; font-size: 14px; margin-top: 4px; margin-bottom: 0;">
+                    Curated client favorites, festive bestsellers, and timeless luxury silhouettes
+                </p>
+            </div>
+            
+            <!-- Filter Pills -->
+            <div class="popular-filter-pills">
+                <button type="button" class="pop-pill active" data-filter="all">All Popular</button>
+                <button type="button" class="pop-pill" data-filter="hot">🔥 Bestsellers</button>
+                <button type="button" class="pop-pill" data-filter="sale">⚡ On Sale</button>
+                <button type="button" class="pop-pill" data-filter="featured">👑 Exclusive Pret</button>
+            </div>
+        </div>
+
+        @php
+            $popularQuery = DB::table('products')
+                ->where('status', 'active')
+                ->where(function($q) {
+                    $q->where('condition', 'hot')
+                      ->orWhere('discount', '>', 0)
+                      ->orWhere('is_featured', 1);
+                })
+                ->orderBy('id', 'desc')
+                ->take(5)
+                ->get();
+
+            if(!$popularQuery || count($popularQuery) < 5) {
+                $popularQuery = DB::table('products')->where('status', 'active')->orderBy('id', 'desc')->take(5)->get();
+            }
+
+            $spotlightProduct = $popularQuery->first();
+            $gridProducts = $popularQuery->slice(1, 4);
+            if($gridProducts->isEmpty()) {
+                $gridProducts = $popularQuery;
+            }
+        @endphp
+
+        <div class="row mt-4 align-items-stretch">
+            
+            <!-- Left: High-Fashion Spotlight Editorial Banner (col-lg-5 col-12) -->
+            @if($spotlightProduct)
+                @php
+                    $spotPhotos = explode(',', $spotlightProduct->photo);
+                    $spotCat = DB::table('categories')->where('id', $spotlightProduct->cat_id)->first();
+                    $spotDiscountPrice = $spotlightProduct->price - ($spotlightProduct->price * $spotlightProduct->discount) / 100;
+                @endphp
+                <div class="col-lg-5 col-12 mb-4 mb-lg-0">
+                    <div class="spotlight-showcase-card">
+                        <div class="spotlight-img-wrap">
+                            <img src="{{$spotPhotos[0]}}" alt="{{$spotlightProduct->title}}">
+                            <div class="spotlight-badge-strip">
+                                <span class="spotlight-badge-crown"><i class="fa fa-star"></i> SPOTLIGHT OF THE WEEK</span>
+                                <span class="spotlight-badge-hot"><i class="fa fa-bolt"></i> 180+ Sold</span>
+                            </div>
+                        </div>
+
+                        <div class="spotlight-content-overlay">
+                            @if($spotCat)
+                                <span class="spotlight-category">{{$spotCat->title}}</span>
+                            @endif
+                            <h3 class="spotlight-title">{{$spotlightProduct->title}}</h3>
+                            
+                            <div class="spotlight-pricing-row">
+                                <span class="spotlight-current-price">PKR {{number_format($spotDiscountPrice, 0)}}</span>
+                                @if($spotlightProduct->discount > 0)
+                                    <del class="spotlight-old-price">PKR {{number_format($spotlightProduct->price, 0)}}</del>
+                                    <span class="spotlight-save-pill">SAVE {{number_format($spotlightProduct->discount, 0)}}%</span>
+                                @endif
+                            </div>
+
+                            <div class="spotlight-perks-row">
+                                <span><i class="ti-check"></i> 100% Pure Luxury Fabric</span>
+                                <span><i class="ti-truck"></i> Express 2-3 Day Delivery</span>
+                            </div>
+
+                            <div class="spotlight-btn-group">
+                                <a href="{{route('product-detail', $spotlightProduct->slug)}}" class="spotlight-cta-btn">
+                                    <span>Shop The Spotlight</span>
+                                    <i class="ti-arrow-right"></i>
+                                </a>
+                                <button type="button" class="spotlight-quickview-btn" data-toggle="modal" data-target="#{{$spotlightProduct->id}}" title="Quick View">
+                                    <i class="ti-eye"></i> Quick View
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            <!-- Right: 2x2 Popular Choices Product Grid (col-lg-7 col-12) -->
+            <div class="col-lg-7 col-12">
+                <div class="row">
+                    @foreach($gridProducts as $item)
+                        @php
+                            $itemPhotos = explode(',', $item->photo);
+                            $itemCat = DB::table('categories')->where('id', $item->cat_id)->first();
+                            $itemDiscountPrice = $item->price - ($item->price * $item->discount) / 100;
+                            $filterCategory = ($item->condition == 'hot') ? 'hot' : (($item->discount > 0) ? 'sale' : 'featured');
+                        @endphp
+                        <div class="col-sm-6 col-6 mb-3 px-2 popular-grid-col" data-cat="{{$filterCategory}}">
+                            <div class="single-product fashion-card popular-luxury-card">
+                                <div class="product-img">
+                                    <a href="{{route('product-detail', $item->slug)}}">
+                                        <img class="default-img" src="{{$itemPhotos[0]}}" alt="{{$item->title}}">
+                                        <img class="hover-img" src="{{$itemPhotos[1] ?? $itemPhotos[0]}}" alt="{{$item->title}}">
+                                    </a>
+
+                                    <!-- Top Badges -->
+                                    <div class="card-badge-wrap">
+                                        @if($item->discount > 0)
+                                            <span class="badge-discount">-{{number_format($item->discount, 0)}}%</span>
+                                        @elseif($item->condition == 'hot')
+                                            <span class="badge-new" style="background: #111111;">★ BESTSELLER</span>
+                                        @else
+                                            <span class="badge-new">POPULAR</span>
+                                        @endif
+                                    </div>
+
+                                    <!-- Wishlist Button -->
+                                    <a title="Add to Wishlist" href="{{route('add-to-wishlist', $item->slug)}}" class="card-wishlist-btn" data-id="{{$item->id}}">
+                                        <i class="ti-heart"></i>
+                                    </a>
+
+                                    <!-- Quick View Button -->
+                                    <button type="button" class="card-quick-view-btn" data-toggle="modal" data-target="#{{$item->id}}">
+                                        <i class="ti-eye"></i> Quick View
+                                    </button>
+
+                                    <!-- Quick Add Bag -->
+                                    <a title="Add to Cart" href="{{route('add-to-cart', $item->slug)}}" class="card-quick-bag-btn">
+                                        <i class="ti-bag"></i>
+                                    </a>
+                                </div>
+
+                                <div class="product-content">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <span class="product-category-tag mb-0">{{$itemCat->title ?? 'Luxury Pret'}}</span>
+                                        <div class="popular-rating-stars">
+                                            <i class="fa fa-star text-warning"></i>
+                                            <span class="small font-weight-bold text-dark ml-1">4.9</span>
+                                        </div>
+                                    </div>
+                                    <h3 class="product-title-text">
+                                        <a href="{{route('product-detail', $item->slug)}}">{{$item->title}}</a>
+                                    </h3>
+                                    <div class="price-box">
+                                        <span class="current-price">PKR {{number_format($itemDiscountPrice, 0)}}</span>
+                                        @if($item->discount > 0)
+                                            <del class="old-price">PKR {{number_format($item->price, 0)}}</del>
+                                        @endif
+                                    </div>
+                                    <div class="popular-sales-meter">
+                                        <span class="meter-text"><i class="fa fa-clock-o"></i> Fast Selling • In High Demand</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+
+        </div>
+
+        <!-- VIP WhatsApp Concierge Strip -->
+        <div class="popular-vip-strip mt-4">
+            <div class="row align-items-center">
+                <div class="col-lg-8 col-md-7 col-12 text-center text-md-left mb-3 mb-md-0">
+                    <div class="d-flex align-items-center justify-content-center justify-content-md-start">
+                        <div class="vip-icon-circle mr-3">
+                            <i class="fa fa-whatsapp"></i>
+                        </div>
+                        <div>
+                            <h5 class="vip-strip-title mb-1">Looking for Custom Tailoring or Bridal Styling?</h5>
+                            <p class="vip-strip-sub mb-0">Connect directly with our senior fashion consultants on WhatsApp for bespoke sizing & order assistance.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-5 col-12 text-center text-md-right">
+                    @php
+                        $settings = DB::table('settings')->get();
+                        $rawWhatsapp = (count($settings) > 0 && !empty($settings[0]->whatsapp)) ? $settings[0]->whatsapp : ($settings[0]->phone ?? '923366888806');
+                        $cleanWhatsapp = preg_replace('/[^0-9]/', '', $rawWhatsapp);
+                        if (substr($cleanWhatsapp, 0, 1) === '0') {
+                            $cleanWhatsapp = '92' . substr($cleanWhatsapp, 1);
+                        }
+                        if (empty($cleanWhatsapp)) {
+                            $cleanWhatsapp = '923366888806';
+                        }
+                    @endphp
+                    <a href="https://wa.me/{{$cleanWhatsapp}}?text={{urlencode('Hi YN-Trading, I would like expert styling assistance for popular choices.')}}" target="_blank" class="popular-whatsapp-btn">
+                        <i class="fa fa-whatsapp mr-1"></i> WhatsApp Styling Concierge
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+<!-- End POPULAR CHOICES Section -->
+
+<!-- 7. Hot Trending Items Carousel -->
 <div class="product-area most-popular section py-5">
     <div class="container-fluid px-lg-5 px-3">
         <div class="luxury-section-title">
-            <span class="subtitle-tag">POPULAR CHOICES</span>
+            <span class="subtitle-tag">DISCOVER THE HYPE</span>
             <h2>Trending Now</h2>
             <p>The most sought-after apparel and hot styles loved by our customers</p>
         </div>
@@ -739,9 +952,12 @@
 <!-- 8. VIP Newsletter Subscription -->
 @include('frontend.layouts.newsletter')
 
-<!-- 9. Quick View Modals (Ultra-Luxury & Responsive) -->
-@if($product_lists)
-    @foreach($product_lists as $key=>$product)
+<!-- 9. Quick View Modals (Ultra-Luxury & Responsive for All Products) -->
+@php
+    $allModalProducts = DB::table('products')->where('status', 'active')->get();
+@endphp
+@if($allModalProducts)
+    @foreach($allModalProducts as $key=>$product)
         <div class="modal fade custom-quickview-modal" id="{{$product->id}}" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -956,7 +1172,26 @@
             });
         }
 
-        /* 3. Modal Background Scroll Lock & Size Selection */
+        /* 3. Popular Choices Filter Pills */
+        $(document).on('click', '.pop-pill', function() {
+            var filter = $(this).data('filter');
+            $('.pop-pill').removeClass('active');
+            $(this).addClass('active');
+
+            if (filter === 'all') {
+                $('.popular-grid-col').fadeIn(250);
+            } else {
+                $('.popular-grid-col').each(function() {
+                    if ($(this).data('cat') === filter) {
+                        $(this).fadeIn(250);
+                    } else {
+                        $(this).fadeOut(150);
+                    }
+                });
+            }
+        });
+
+        /* 4. Modal Background Scroll Lock & Size Selection */
         $(document).on('show.bs.modal', '.custom-quickview-modal', function () {
             $('body').addClass('modal-open').css({ 'overflow': 'hidden', 'height': '100vh' });
         });
