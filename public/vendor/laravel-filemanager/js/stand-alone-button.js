@@ -1,11 +1,29 @@
 (function( $ ){
 
+  function normalizeUrl(url) {
+    if (!url) return '';
+    url = url.trim();
+    var currentOrigin = window.location.origin;
+    // Replace any foreign domain (hostinger or localhost) pointing to storage with current local origin
+    if (url.indexOf('/storage/') !== -1) {
+      var path = url.substring(url.indexOf('/storage/'));
+      return currentOrigin + path;
+    }
+    return url;
+  }
+
   function renderPreviews(target_input, target_preview) {
     target_preview.html('');
     var raw = target_input.val() ? target_input.val().trim() : '';
     if (!raw) return;
-    var urls = raw.split(',').map(function(u) { return u.trim(); }).filter(function(u) { return u !== ''; });
     
+    var urls = raw.split(',').map(function(u) { return normalizeUrl(u); }).filter(function(u) { return u !== ''; });
+    
+    // Update input with normalized URLs
+    if (urls.join(',') !== raw) {
+      target_input.val(urls.join(','));
+    }
+
     urls.forEach(function(url, idx) {
       var wrapper = $('<div class="img-preview-wrapper"></div>').css({
         'position': 'relative',
@@ -78,17 +96,18 @@
         
         window.SetUrl = function (items) {
           var file_path = items.map(function (item) {
-            return item.url;
+            return normalizeUrl(item.url);
           }).join(',');
 
           // Append to existing input value if present, preventing duplicate items
           var existing = target_input.val() ? target_input.val().trim() : '';
           var full_path = file_path;
           if (existing !== '') {
-            var existing_arr = existing.split(',').map(function(u) { return u.trim(); }).filter(function(u) { return u !== ''; });
+            var existing_arr = existing.split(',').map(function(u) { return normalizeUrl(u); }).filter(function(u) { return u !== ''; });
             items.forEach(function(item) {
-              if (existing_arr.indexOf(item.url) === -1) {
-                existing_arr.push(item.url);
+              var normUrl = normalizeUrl(item.url);
+              if (existing_arr.indexOf(normUrl) === -1) {
+                existing_arr.push(normUrl);
               }
             });
             full_path = existing_arr.join(',');

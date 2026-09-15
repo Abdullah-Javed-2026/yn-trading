@@ -36,39 +36,15 @@ Version:1.0
 21. Footer CSS
 ========================================*/
 .color-plate {
-	position: fixed;
-	display: block;
-	z-index: 99998;
-	padding: 20px;
-	width: 245px;
-	background: #fff;
-	right: -245px;
-	text-align: left;
-	top: 30%;
-	-webkit-transition:all 0.4s ease;
-	-moz-transition:all 0.4s ease;
-	transition:all 0.4s ease;
-	-webkit-box-shadow: -3px 0px 25px -2px rgba(0, 0, 0, 0.2);
-	-moz-box-shadow: -3px 0px 25px -2px rgba(0, 0, 0, 0.2);
-	box-shadow: -3px 0px 25px -2px rgba(0, 0, 0, 0.2);
-}
-.color-plate.active{
-	right:0;
+	display: none !important;
+	box-shadow: none !important;
+	-webkit-box-shadow: none !important;
+	-moz-box-shadow: none !important;
+	visibility: hidden !important;
 }
 .color-plate .color-plate-icon {
-	position: absolute;
-	left: -48px;
-	width: 48px;
-	height: 45px;
-	line-height: 45px;
-	font-size: 21px;
-	border-radius: 5px 0 0 5px;
-	background: #fff;
-	text-align: center;
-	color: #333;
-	top: 0;
-	cursor: pointer;
-	box-shadow: -4px 0px 5px #00000036;
+	display: none !important;
+	box-shadow: none !important;
 }
 .color-plate h4 {
 	display: block;

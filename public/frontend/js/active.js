@@ -117,27 +117,55 @@ window.onload = () => {
 		}
 		
 		/*=======================
-		  Popular Slider JS
+		  Luxury Trending & Popular Slider JS
 		=========================*/ 
-		if ($('.popular-slider').length) {
+		if ($('.luxury-trending-slider').length) {
+			var $trendSlider = $('.luxury-trending-slider');
+			$trendSlider.owlCarousel({
+				items: 4,
+				loop: true,
+				margin: 20,
+				autoplay: true,
+				autoplayTimeout: 4500,
+				autoplaySpeed: 700,
+				smartSpeed: 700,
+				autoplayHoverPause: true,
+				nav: false,
+				dots: true,
+				responsive: {
+					0: { items: 2, margin: 10 },
+					576: { items: 2, margin: 14 },
+					768: { items: 3, margin: 18 },
+					1170: { items: 4, margin: 20 }
+				}
+			});
+
+			$('#trendingPrevBtn').on('click', function(e) {
+				e.preventDefault();
+				$trendSlider.trigger('prev.owl.carousel');
+			});
+			$('#trendingNextBtn').on('click', function(e) {
+				e.preventDefault();
+				$trendSlider.trigger('next.owl.carousel');
+			});
+		} else if ($('.popular-slider').length) {
 			$('.popular-slider').owlCarousel({
 				items: 4,
 				loop: true,
 				margin: 20,
 				autoplay: true,
-				slideTransition: 'linear',
-				autoplayTimeout: 0,
-				autoplaySpeed: 4000,
-				smartSpeed: 4000,
+				autoplayTimeout: 4500,
+				autoplaySpeed: 700,
+				smartSpeed: 700,
 				autoplayHoverPause: true,
 				nav: true,
 				dots: false,
 				navText: ['<i class="ti-angle-left"></i>', '<i class="ti-angle-right"></i>'],
 				responsive: {
-					0: { items: 1 },
-					480: { items: 2 },
-					768: { items: 3 },
-					1170: { items: 4 }
+					0: { items: 2, margin: 10 },
+					576: { items: 2, margin: 14 },
+					768: { items: 3, margin: 18 },
+					1170: { items: 4, margin: 20 }
 				}
 			});
 		}

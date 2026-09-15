@@ -629,25 +629,26 @@
             margin-right: 8px !important;
         }
 
-        /* Home Banner Slider Fix */
+        /* Home Banner Slider Mobile Styling */
         #Gslider {
-            background: #ffffff !important;
+            background: #050505 !important;
             position: relative !important;
+            height: 520px !important;
+            min-height: 520px !important;
         }
         #Gslider .carousel-inner,
         #Gslider .carousel-item {
-            background: #ffffff !important;
-            height: auto !important;
-            min-height: 0 !important;
+            height: 100% !important;
+            min-height: 520px !important;
         }
         #Gslider .carousel-item img {
             width: 100% !important;
-            height: auto !important;
-            max-height: 420px !important;
+            height: 100% !important;
             object-fit: cover !important;
+            object-position: center 25% !important;
         }
         #Gslider .carousel-indicators {
-            bottom: 8px !important;
+            bottom: 12px !important;
             margin-bottom: 0 !important;
             z-index: 10 !important;
         }
@@ -734,6 +735,20 @@
             width: 300px !important;
             right: -10px !important;
         }
+    }
+
+    /* Complete removal of color plate switcher & stray offscreen box shadows */
+    .color-plate,
+    .color-plate-icon,
+    .color-plate * {
+        display: none !important;
+        box-shadow: none !important;
+        -webkit-box-shadow: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        width: 0 !important;
+        height: 0 !important;
     }
 </style>
 @stack('styles')

@@ -3,7 +3,7 @@
 <head>
 	@include('frontend.layouts.head')	
 </head>
-<body class="js">
+<body class="js {{ Request::is('/') || Request::is('home') || Request::routeIs('home') ? 'homepage-layout' : 'innerpage-layout' }}">
 	
 	<!-- Preloader -->
 	<div class="preloader">
